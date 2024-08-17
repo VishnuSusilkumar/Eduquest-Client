@@ -8,6 +8,9 @@ import CustomModal from "../utils/CustomModal";
 import Login from "../components/Login";
 import SignUp from "../components/Signup";
 import Verification from "../components/Verification";
+import ForgotPassword from "./ForgotPassword";
+import VerifyResetCode from "./VerifyResetCode";
+import ResetPassword from "./ResetPassword";
 import { useSelector } from "react-redux";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -183,6 +186,45 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
               setRoute={setRoute}
               activeItem={activeItem}
               component={Verification}
+            />
+          )}
+        </>
+      )}
+      {route === "ForgotPassword" && (
+        <>
+          {open && (
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={ForgotPassword}
+            />
+          )}
+        </>
+      )}
+      {route === "VerifyResetCode" && (
+        <>
+          {open && (
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={VerifyResetCode}
+            />
+          )}
+        </>
+      )}
+      {route === "ResetPassword" && (
+        <>
+          {open && (
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={ResetPassword}
             />
           )}
         </>

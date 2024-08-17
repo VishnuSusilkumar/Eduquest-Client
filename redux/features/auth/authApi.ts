@@ -1,11 +1,26 @@
 import { apiSlice } from "../api/apiSlice";
-import { userLoggedIn, userLoggedOut, userRegistration } from "./authSlice";
+import {
+  userLoggedIn,
+  userLoggedOut,
+  userRegistration,
+  setResetPassword,
+  successResetPassword,
+} from "./authSlice";
 import { signOut, useSession } from "next-auth/react";
 
 type RegistrationResponse = {
   message: string;
   data: {
     token: string;
+  };
+};
+
+type ForgotPasswordResponse = {
+  message: string;
+  data: {
+    resetToken: string;
+    userId: string;
+    email: string;
   };
 };
 
@@ -45,6 +60,68 @@ export const authApi = apiSlice.injectEndpoints({
           activationCode,
         },
       }),
+    }),
+
+    forgotPassword: builder.mutation<ForgotPasswordResponse, string>({
+      query: (email) => ({
+        url: "user/forgot-password",
+        method: "POST",
+        body: { email },
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          console.log("Forgot Password Result:", result);
+          dispatch(
+            setResetPassword({
+              resetToken: result.data.data.resetToken,
+              email: result.data.data.email,
+              userId: result.data.data.userId,
+            })
+          );
+        } catch (e: any) {
+          console.log(e?.error?.data);
+        }
+      },
+    }),
+
+    verifyResetCode: builder.mutation({
+      query: ({ token, resetCode }) => ({
+        url: "user/verify-reset-code",
+        method: "POST",
+        body: {
+          token,
+          resetCode,
+        },
+      }),
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          const result = await queryFulfilled;
+          console.log(result.data.message);
+        } catch (e: any) {
+          console.log(e?.error?.data);
+        }
+      },
+    }),
+
+    resetPassword: builder.mutation({
+      query: ({ userId, newPassword }) => ({
+        url: "user/reset-password",
+        method: "POST",
+        body: {
+          newPassword,
+          userId,
+        },
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          console.log(result.data.message);
+          dispatch(successResetPassword());
+        } catch (e: any) {
+          console.log(e?.error?.data);
+        }
+      },
     }),
 
     login: builder.mutation({
@@ -125,4 +202,7 @@ export const {
   useLoginMutation,
   useSocialAuthMutation,
   useLogOutQuery,
+  useForgotPasswordMutation,
+  useVerifyResetCodeMutation,
+  useResetPasswordMutation,
 } = authApi;

@@ -70,7 +70,7 @@ const Login: React.FC<Props> = ({ setRoute, setOpen }) => {
           value={values.email}
           onChange={handleChange}
           id="email"
-          placeholder="eduwise@gmail.com"
+          placeholder="Enter your email"
           className={`${errors.email && touched.email && "border-red-500"} ${
             styles.input
           } text-sm`}
@@ -89,7 +89,7 @@ const Login: React.FC<Props> = ({ setRoute, setOpen }) => {
             value={values.password}
             onChange={handleChange}
             id="password"
-            placeholder="Eduwise@2024"
+            placeholder="Enter your password"
             className={`${
               errors.password && touched.password && "border-red-500"
             } ${styles.input} text-sm`}
@@ -122,6 +122,14 @@ const Login: React.FC<Props> = ({ setRoute, setOpen }) => {
           />
         </div>
         <br />
+        <div className="flex">
+          <span
+            className="text-[#2190ff] cursor-pointer text-sm"
+            onClick={() => setRoute("ForgotPassword")}
+          >
+            Forgot password?
+          </span>
+        </div>
 
         <h5 className="text-center pt-4 font-Poppins text-sm text-black dark:text-white">
           Or join with
