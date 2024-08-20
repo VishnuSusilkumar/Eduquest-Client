@@ -6,6 +6,7 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "avatars.githubusercontent.com",
       "firebasestorage.googleapis.com",
+      "eduquest-elearning.s3.ap-south-1.amazonaws.com",
     ],
   },
 };

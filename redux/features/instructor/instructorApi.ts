@@ -10,19 +10,19 @@ export const instructorApi = apiSlice.injectEndpoints({
         body: formData,
         credentials: "include" as const,
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-          dispatch(
-            userLoggedIn({
-              accessToken: result.data?.accessToken,
-              user: result.data.user,
-            })
-          );
-        } catch (e: any) {
-          console.log(e?.error?.data);
-        }
-      },
+    //   async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+    //     try {
+    //       const result = await queryFulfilled;
+    //       dispatch(
+    //         userLoggedIn({
+    //           accessToken: result.data.accessToken,
+    //           user: result.data.user,
+    //         })
+    //       );
+    //     } catch (e: any) {
+    //       console.log(e?.error?.data);
+    //     }
+    //   },
     }),
   }),
 });

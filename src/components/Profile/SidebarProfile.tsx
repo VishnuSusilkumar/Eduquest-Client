@@ -5,6 +5,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { SiCoursera } from "react-icons/si";
 import { AiOutlineLogout } from "react-icons/ai";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { HiAcademicCap } from "react-icons/hi";
 import Link from "next/link";
 
 type Props = {
@@ -82,6 +83,18 @@ const SidebarProfile: FC<Props> = ({
           />
           <h5 className="pl-6 800px:block hidden font-Poppins dark:text-white text-black text-sm font-thin">
             Admin Dashboard
+          </h5>
+        </Link>
+      )}
+
+      {user.role === "instructor" && (
+        <Link
+          className={`flex h-16 w-full cursor-pointer items-center border-b bg-transparent px-4 py-4 hover:bg-blue-gray-50`}
+          href={"/instructor"}
+        >
+          <HiAcademicCap size={20} className="dark:text-white text-black " />
+          <h5 className="hidden pl-6 font-Poppins text-sm  font-thin dark:text-white text-black 800px:block">
+            Instructor Dashboard
           </h5>
         </Link>
       )}

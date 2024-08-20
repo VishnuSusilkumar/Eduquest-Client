@@ -71,7 +71,7 @@ const SignUp: React.FC<Props> = ({ setRoute }) => {
     if (error) {
       if ("data" in error) {
         const errorData = error as any;
-        toast.error(errorData.data.message.details);
+        toast.error(errorData.data.message);
       }
     }
   }, [isSuccess, error]);
@@ -98,7 +98,7 @@ const SignUp: React.FC<Props> = ({ setRoute }) => {
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
   return (
-    <div className="w-full text-black">
+    <div className="w-full">
       <h1
         className={`${styles.title} text-2xl  tracking-wider mb-6 mt-5 uppercase`}
       >
@@ -188,7 +188,7 @@ const SignUp: React.FC<Props> = ({ setRoute }) => {
         </div>
         <br />
 
-        <h5 className="text-center pt-4 font-Poppins text-sm text-black ">
+        <h5 className="text-center pt-4 font-Poppins text-sm text-black dark:text-white">
           Or join with
         </h5>
 

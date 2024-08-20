@@ -1,7 +1,7 @@
 "use client";
 import React, { FC, useState } from "react";
 import Header from "../components/Header";
-import Carousell from "../components/Carousel/Carousel";
+import Carousell from "../components/ui/Carousel/Carousel";
 import Heading from "../utils/Heading";
 interface Props {}
 

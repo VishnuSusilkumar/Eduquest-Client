@@ -17,6 +17,7 @@ type Props = {
 
 const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   const [name, setName] = useState(user && user.name);
+  const [initialName, setInitialName] = useState(user && user.name); // Store initial name
   const imageRef = useRef<HTMLInputElement>(null);
   const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
   const [editprofile, { isSuccess: profileSuccess, error: profileError }] =
@@ -40,7 +41,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
       setLoadUser(true);
     }
     if (profileSuccess) {
-      toast.success("Profile updated Successfully");
+      toast.success("Profile updated successfully");
     }
     if (error || profileError) {
       console.log(error);
@@ -49,12 +50,14 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (name !== "") {
-      await editprofile({
-        name,
-      });
+    if (name !== "" && name !== initialName) {
+      await editprofile({ name });
+      setInitialName(name); 
+    } else if (name === initialName) {
+      toast.info("No changes made to the name");
     }
   };
+
   return (
     <>
       <div className="w-full flex justify-center">
@@ -92,21 +95,21 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
         <form onSubmit={handleSubmit}>
           <div className="800px:w-[50%] m-auto block pb-4">
             <div className="w-[100] pb-2">
-              <label className="block font-Poppins"> Full Name</label>
+              <label className="block font-Poppins">Full Name</label>
               <input
                 type="text"
-                className={`${styles.input} !w-[95%]  800px:mb-0 text-base`}
+                className={`${styles.input} !w-[95%] 800px:mb-0 text-base`}
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="w-[100]">
-              <label className="block pt-2 font-Poppins"> Email Address</label>
+              <label className="block pt-2 font-Poppins">Email Address</label>
               <input
                 type="text"
                 readOnly
-                className={`${styles.input} !w-[95%]  800px:mb-0`}
+                className={`${styles.input} !w-[95%] 800px:mb-0`}
                 required
                 value={user?.email}
               />
@@ -114,7 +117,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
             <input
               className={`w-[95%] 800px:w-[250px] h-[40px] border border-[#37a39a] text-center dark:text-[#fff] text-black rounded-[3px] mt-8 cursor-pointer`}
               required
-              value="update"
+              value="Update"
               type="submit"
             />
           </div>

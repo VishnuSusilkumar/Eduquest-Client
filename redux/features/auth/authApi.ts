@@ -137,6 +137,7 @@ export const authApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
+
           dispatch(
             userLoggedIn({
               accessToken: result.data.accessToken,
@@ -144,7 +145,7 @@ export const authApi = apiSlice.injectEndpoints({
             })
           );
         } catch (e: any) {
-          console.log(e?.error?.data);
+          console.log(e.error.data);
         }
       },
     }),
@@ -177,17 +178,16 @@ export const authApi = apiSlice.injectEndpoints({
       },
     }),
 
-    logOut: builder.query({
+    logOut: builder.mutation({
       query: () => ({
         url: "user/logout",
-        method: "GET",
+        method: "POST",
         credentials: "include" as const,
       }),
       async onQueryStarted(arg, { dispatch }) {
         try {
-          const user = useSession();
           dispatch(userLoggedOut());
-          user && (await signOut());
+          await signOut();
         } catch (e: any) {
           console.log(e?.error?.data);
         }
@@ -201,7 +201,7 @@ export const {
   useActivationMutation,
   useLoginMutation,
   useSocialAuthMutation,
-  useLogOutQuery,
+  useLogOutMutation,
   useForgotPasswordMutation,
   useVerifyResetCodeMutation,
   useResetPasswordMutation,

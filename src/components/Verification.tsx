@@ -31,7 +31,7 @@ const Verification: React.FC<Props> = ({ setRoute }) => {
     if (error) {
       if ("data" in error) {
         const errorData = error as any;
-        toast.error(errorData.data.message.details);
+        toast.error(errorData.data.message);
       } else {
         console.log("An error occured");
       }

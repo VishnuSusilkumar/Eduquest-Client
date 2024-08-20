@@ -21,8 +21,8 @@ const Carousell = () => {
           ))}
         </div>
       )}
-      onPointerEnterCapture={() => {}} // Add these empty handlers
-      onPointerLeaveCapture={() => {}} // Add these empty handlers
+      onPointerEnterCapture={() => {}} 
+      onPointerLeaveCapture={() => {}} 
     >
       <img
         src="https://firebasestorage.googleapis.com/v0/b/ecommerce-image-store-1d566.appspot.com/o/assets%2Fel1.jpg?alt=media&token=d9bfb361-b82b-477f-be76-2ffe5a1a6917"

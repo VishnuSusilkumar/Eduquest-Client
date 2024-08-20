@@ -7,7 +7,6 @@ import { Toaster } from "sonner";
 import { Providers } from "./Provider";
 import { SessionProvider } from "next-auth/react";
 import { useLoadUserQuery } from "../../redux/features/api/apiSlice";
-import Loader from "../components/Loader/Loader";
 import { FC } from "react";
 import { BeatLoader } from "react-spinners";
 
