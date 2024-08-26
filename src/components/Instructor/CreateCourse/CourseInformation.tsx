@@ -126,41 +126,63 @@ const CourseInformation: React.FC<Props> = ({
             </div>
           </div>
           <br />
-          <div>
-            <label className={`${styles.label}`} htmlFor="email">
-              Course Tags{" "}
-            </label>
-            <input
-              type="text"
-              required
-              name=""
-              value={courseInfo.tags}
-              onChange={(e: any) =>
-                setCourseInfo({ ...courseInfo, tags: e.target.value })
-              }
-              id="tags"
-              placeholder="MERN, Next 13, Socket io, tailwind css, LMS"
-              className={`${styles.input}`}
-            />
+          <div className="w-full flex justify-between">
+            <div className="w-[45%]">
+              <label className={`${styles.label}`} htmlFor="email">
+                Course Tags{" "}
+              </label>
+              <input
+                type="text"
+                required
+                name=""
+                value={courseInfo.tags}
+                onChange={(e: any) =>
+                  setCourseInfo({ ...courseInfo, tags: e.target.value })
+                }
+                id="tags"
+                placeholder="MERN, Next 13, Socket io, tailwind css, LMS"
+                className={`${styles.input}`}
+              />
+            </div>
+            <div className="w-[45%]">
+              <label className={`${styles.label}`} htmlFor="email">
+                Subtitle Url{" "}
+              </label>
+              <input
+                type="text"
+                required
+                name=""
+                value={courseInfo.subtitleUrl}
+                onChange={(e: any) =>
+                  setCourseInfo({ ...courseInfo, subtitleUrl: e.target.value })
+                }
+                id="subtitle"
+                placeholder="Subtitle Url.."
+                className={`${styles.input}`}
+              />
+            </div>
           </div>
         </div>
         <br />
 
         <div className="w-full flex justify-between">
           <div className="w-[45%]">
-            <label htmlFor="">Course Level</label>
-            <input
-              type="text"
-              name=""
+            <label htmlFor="level">Course Level</label>
+            <select
+              name="level"
               required
               value={courseInfo.level}
-              onChange={(e: any) =>
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 setCourseInfo({ ...courseInfo, level: e.target.value })
               }
               id="level"
-              placeholder="Beginner/intermediate/Expert"
               className={`${styles.input} `}
-            />
+            >
+              <option value="">Select Course Level</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
           </div>
           <div className="w-[45%]">
             <label htmlFor="">Demo Url</label>

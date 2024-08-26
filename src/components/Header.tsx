@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useSocialAuthMutation } from "../../redux/features/auth/authApi";
+import { useLoadUserQuery } from "../../redux/features/api/apiSlice";
 import { toast } from "sonner";
 
 type Props = {
@@ -28,7 +29,14 @@ type Props = {
 const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const [active, setActive] = useState(false);
   const [openSidebar, setopenSidebar] = useState(false);
-  const { user } = useSelector((state: any) => state.auth);
+  const {
+    data: userData,
+    isLoading,
+    refetch,
+  } = useLoadUserQuery(undefined, {});
+  const { user: reduxUser } = useSelector((state: any) => state.auth);
+
+  const [user, setUser] = useState<any>();
   const { data } = useSession();
   const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
 
@@ -48,37 +56,36 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   }, [isSuccess, error]);
 
   useEffect(() => {
-    if (!user) {
+    if (!userData) {
       if (data) {
         socialauth();
       }
+      refetch();
     }
-  }, [data, user]);
+  }, [data]);
 
-  // if(typeof window !== "undefined"){
-  //   window.addEventListener("scroll", () => {
-  //     console.log(window.scrollY );
-  //     if(window.scrollY > 85){
-  //       setActive(true)
-  //     }else{
-  //       setActive(false)
-  //     }
-  //   })
-  // }
+  useEffect(() => {
+    if (userData) {
+      setUser(userData.user);
+    } else if (!isLoading) {
+      refetch();
+    }
+  }, [reduxUser, userData]);
 
   const handleClose = (e: any) => {
     if (e.target.id === "screen") {
       setopenSidebar(false);
+      refetch();
     }
   };
 
   return (
-    <div className="w-full relative shadow-sm">
+    <div className="relative z-[9999] w-full px-[12%] shadow-sm ">
       <div
         className={`${
           active
-            ? "dark:bg-opacity-50 dark:bg-gradient-to-b dark:from-gray-900 dark:to-black fixed top-0 left-0 w-full h-[80px] z-[80] border-b dark:border-[#ffffff1c] shadow-xl transition duration-500"
-            : "w-full border-b dark:border-[#ffffff1c] h-[80px] z-[80] dark:shadow"
+            ? "   fixed left-0 top-0 z-[80] h-[90px] w-full  shadow-xl transition duration-500"
+            : "z-[80]  h-[65px] w-full 800px:h-[90px] "
         }`}
       >
         <div className="w-[95%] 800px:w-[92%] m-auto py-2 h-full">

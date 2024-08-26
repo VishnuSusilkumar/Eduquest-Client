@@ -1,14 +1,17 @@
 import React from "react";
-import CoursePlayer from "../../../utils/CoursePlayer";
 import { styles } from "@/styles/style";
 import Ratings from "../../../utils/Ratings";
 import { IoMdCheckmark } from "react-icons/io";
+import VideoPlayer from "../../../utils/VideoPlayer";
+import SubLoader from "../../../components/ui/Loader/SubLoader";
 
 type Props = {
   active: number;
   setActive: (active: number) => void;
   courseData: any;
   handleCourseCreate: any;
+  isEdit: boolean;
+  isLoading: boolean;
 };
 
 const CoursePreview: React.FC<Props> = ({
@@ -16,6 +19,8 @@ const CoursePreview: React.FC<Props> = ({
   setActive,
   courseData,
   handleCourseCreate,
+  isEdit,
+  isLoading,
 }) => {
   const prevButton = () => {
     setActive(active - 1);
@@ -27,62 +32,55 @@ const CoursePreview: React.FC<Props> = ({
   const discount = ((estimatedPrice - price) / estimatedPrice) * 100;
   const discountPrice = discount.toFixed(0);
   return (
-    <div className="m-auto py-5 mb-5 font-Poppins ">
-      <div className="w-full relative z-[-1]">
-        {/* <div className="w-full mt-10">
-          <CoursePlayer
+    <div className="m-auto mb-5 font-Poppins ">
+      <div className="w-full relative">
+        <div className="800px:w-[80%] mt-10">
+          <VideoPlayer
             videoUrl={courseData?.demoUrl}
-            title={courseData?.title}
+            subtitleUrl={courseData?.subtitleUrl}
           />
-        </div> */}
+        </div>
         <div className="flex items-center">
-          <h1 className="pt-5 text-[25px]">
+          <h1 className="pt-5 text-[25px] font-bold">
             {courseData?.price === 0 ? (
               "Free"
             ) : (
               <>&#x20b9; {courseData?.price}</>
             )}
           </h1>
-          <h5 className="pl-4 text-[18px] pt-5 line-through opacity-80 text-gray-700">
+          <h5 className="pl-2 text-[16px] pt-6 line-through opacity-80 text-gray-700">
             &#x20b9; {courseData?.estimatedPrice}
           </h5>
-          <h4 className="pl-3 pt-4 text-[22px]">
+          <h4 className="pl-2 pt-5 text-[20px] font-semibold">
             <span className="text-green-500">{discountPrice}% </span>off
           </h4>
         </div>
-        <div className="flex items-center">
-          <div
-            className={`${styles.button} text-white !w-[180px] my-3 font-Poppins !bg-[crimson] cursor-not-allowed`}
-          >
-            Buy Now &#x20b9; {courseData?.price}
-          </div>
-        </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center !w-[45%] mb-4">
           <input
             type="text"
             name=""
             id=""
             placeholder="coupon code"
-            className={`${styles.input} 1500px:!w-[50%] 1100px:!w-[60%] ml-3 !mt-0`}
+            className={`${styles.input}`}
           />
           <div
-            className={`${styles.button} !bg-gradient-to-tr from-indigo-200 to-indigo-400 !w-[120px] my-3 ml-4 font-Poppins cursor-pointer text-white !text-[14px]`}
+            className={`${styles.button} !w-[20%] ml-2 text-white font-thin`}
           >
             Apply
           </div>
         </div>
-        <p className="pb-1">* Source code included</p>
-        <p className="pb-1">* Full life time access</p>
-        <p className="pb-1">* Certificates of Completion</p>
-        <p className="pb-3 800px:pb-6">* Premium Support</p>
+        <p className="pb-1 text-sm">* Source code included</p>
+        <p className="pb-1 text-sm ">* Full life time access</p>
+        <p className="pb-1 text-sm">* Certificates of Completion</p>
+        <p className="pb-3 800px:pb-6 text-sm">* Premium Support</p>
       </div>
       <div className="w-full">
         <div className="w-full 800px:pr-5">
-          <h1 className="text-[22px] font-Poppins font-[600]">
+          <h1 className="text-[24px] font-Poppins font-[600]">
             {courseData?.name}
           </h1>
-          <div className="flex items-center gap-2 pt-3">
+          <div className="flex items-center gap-2 pt-1 text-sm">
             <div className="flex items-center">
               <Ratings rating={0} />
               <h5>0 Reviews</h5>
@@ -90,7 +88,7 @@ const CoursePreview: React.FC<Props> = ({
             <h5>0 students</h5>
           </div>
           <br />
-          <h1 className="text-[23px] font-Poppins font-[600]">
+          <h1 className="text-xl font-Poppins font-[600]">
             what you will learn from this course?
           </h1>
         </div>
@@ -99,12 +97,11 @@ const CoursePreview: React.FC<Props> = ({
             <div className="w-[15px] mr-1">
               <IoMdCheckmark size={20} />
             </div>
-            <p className="pl-2">{item.title}</p>
+            <p className="pl-2 text-sm">{item.title}</p>
           </div>
         ))}
         <br />
-        <br />
-        <h1 className="text-[23px] font-Poppins font-[600]">
+        <h1 className="text-xl font-Poppins font-[600]">
           what are the prequisites for starting this course?
         </h1>
 
@@ -113,13 +110,12 @@ const CoursePreview: React.FC<Props> = ({
             <div className="w-[15px] mr-1">
               <IoMdCheckmark size={20} />
             </div>
-            <p className="pl-2">{item.title}</p>
+            <p className="pl-2 text-sm">{item.title}</p>
           </div>
         ))}
         <br />
-        <br />
-        <div className="w-full">
-          <h1 className="text-[25px] font-Poppins font-[600]">
+        <div className=" text-sm 800px:w-[60%]">
+          <h1 className="text-xl font-Poppins font-[600] pb-2">
             Course Details
           </h1>
           {courseData?.description}
@@ -135,10 +131,10 @@ const CoursePreview: React.FC<Props> = ({
           Prev
         </div>
         <div
-          className="1100px:mr-16  w-full 800px:w-[180px] h-[40px] bg-gradient-to-tr from-indigo-200 to-indigo-400 text-center text-[#fff] rounded pt-2 cursor-pointer"
+          className="1100px:mr-16  w-full 800px:w-[180px] min-h-[40px] bg-gradient-to-tr from-indigo-200 to-indigo-400 text-center text-[#fff] rounded  cursor-pointer items-center flex justify-center"
           onClick={() => handleCourseCreate()}
         >
-          Create
+          {isLoading ? <SubLoader /> : isEdit ? "Update" : "Create"}
         </div>
       </div>
     </div>

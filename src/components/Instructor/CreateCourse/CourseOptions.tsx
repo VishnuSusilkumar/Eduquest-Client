@@ -14,7 +14,7 @@ const CourseOptions: React.FC<Props> = ({ active, setActive }) => {
     "Course Preview",
   ];
   return (
-    <div className="font-Poppins 800px:pl-2">
+    <div className="font-Poppins 800px:pl-2 ">
       {options.map((option: any, index: number) => (
         <div key={index} className={"w-full flex py-5"}>
           <div

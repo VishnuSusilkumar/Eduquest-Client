@@ -3,7 +3,6 @@ import { Link2Icon, PencilIcon, PlusCircle } from "lucide-react";
 import React, { useState } from "react";
 import { AiOutlineDelete, AiOutlinePlusCircle } from "react-icons/ai";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { RiQqFill } from "react-icons/ri";
 import { toast } from "sonner";
 
 type Props = {
@@ -22,7 +21,7 @@ const CourseContent: React.FC<Props> = ({
   handleSubmit: handleCourseSubmit,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(
-    Array(courseContentData.length).fill(false)
+    Array(courseContentData?.length).fill(false)
   );
   const [activeSection, setActiveSection] = useState(1);
 
@@ -53,6 +52,7 @@ const CourseContent: React.FC<Props> = ({
       item.title === "" ||
       item.description === "" ||
       item.videoUrl === "" ||
+      item.subtitleUrl === "" ||
       item.links[0].url === ""
     ) {
       toast.error("Please fill all the fields!");
@@ -68,6 +68,7 @@ const CourseContent: React.FC<Props> = ({
       }
       const newContent = {
         videoUrl: "",
+        subtitleUrl: "",
         title: "",
         description: "",
         videoSection: newVideoSection,
@@ -82,6 +83,7 @@ const CourseContent: React.FC<Props> = ({
       courseContentData[courseContentData.length - 1].title === "" ||
       courseContentData[courseContentData.length - 1].description === "" ||
       courseContentData[courseContentData.length - 1].videoUrl === "" ||
+      courseContentData[courseContentData.length - 1].subtitleUrl === "" ||
       courseContentData[courseContentData.length - 1].links[0].title === "" ||
       courseContentData[courseContentData.length - 1].title[0].url === ""
     ) {
@@ -90,6 +92,7 @@ const CourseContent: React.FC<Props> = ({
       setActiveSection(activeSection + 1);
       const newContent = {
         videoUrl: "",
+        subtitleUrl: "",
         title: "",
         description: "",
         videoSection: `Untitled Section  ${activeSection + 1}`,
@@ -108,6 +111,7 @@ const CourseContent: React.FC<Props> = ({
       courseContentData[courseContentData.length - 1].title === "" ||
       courseContentData[courseContentData.length - 1].description === "" ||
       courseContentData[courseContentData.length - 1].videoUrl === "" ||
+      courseContentData[courseContentData.length - 1].subtitleUrl === "" ||
       courseContentData[courseContentData.length - 1].links[0].title === "" ||
       courseContentData[courseContentData.length - 1].title[0].url === ""
     ) {
@@ -136,15 +140,18 @@ const CourseContent: React.FC<Props> = ({
                     <div className="flex w-full items-center">
                       <input
                         type="text"
-                        className={`text-[16px] ${
+                        className={`text-[16px] px-2${
                           item.videoSection === "Untitled Section"
                             ? "w-[170px]"
-                            : "w-min"
+                            : "w-[60%]"
                         } font-Poppins cursor-pointer dark:text-white text-black bg-transparent outline-none `}
                         value={item.videoSection}
                         onChange={(e) => {
                           const updatedData = [...courseContentData];
-                          updatedData[index].videoSection = e.target.value;
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            videoSection: e.target.value,
+                          };
                           setCourseContentData(updatedData);
                         }}
                       />
@@ -228,6 +235,20 @@ const CourseContent: React.FC<Props> = ({
                       />
                     </div>
                     <div className="my-3">
+                      <label className={`${styles.label}`}>Subtitle Url</label>
+                      <input
+                        type="text"
+                        placeholder="Subtitle Url..."
+                        className={`${styles.input}`}
+                        value={item.subtitleUrl}
+                        onChange={(e) => {
+                          const updatedData = [...courseContentData];
+                          updatedData[index].subtitleUrl = e.target.value;
+                          setCourseContentData(updatedData);
+                        }}
+                      />
+                    </div>
+                    <div className="my-3">
                       <label className={`${styles.label}`}>
                         Video Description
                       </label>
@@ -271,8 +292,14 @@ const CourseContent: React.FC<Props> = ({
                           value={link.title}
                           onChange={(e) => {
                             const updatedData = [...courseContentData];
-                            updatedData[index].links[linkIndex].title =
-                              e.target.value;
+                            updatedData[index] = {
+                              ...updatedData[index],
+                              links: [...updatedData[index].links], // Make a copy of links array
+                            };
+                            updatedData[index].links[linkIndex] = {
+                              ...updatedData[index].links[linkIndex], // Make a copy of link object
+                              title: e.target.value,
+                            };
                             setCourseContentData(updatedData);
                           }}
                         />
@@ -283,8 +310,14 @@ const CourseContent: React.FC<Props> = ({
                           value={link.url}
                           onChange={(e) => {
                             const updatedData = [...courseContentData];
-                            updatedData[index].links[linkIndex].url =
-                              e.target.value;
+                            updatedData[index] = {
+                              ...updatedData[index],
+                              links: [...updatedData[index].links], // Make a copy of links array
+                            };
+                            updatedData[index].links[linkIndex] = {
+                              ...updatedData[index].links[linkIndex], // Make a copy of link object
+                              url: e.target.value,
+                            };
                             setCourseContentData(updatedData);
                           }}
                         />

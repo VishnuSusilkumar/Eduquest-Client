@@ -13,7 +13,6 @@ export const store = configureStore({
     getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
-// call refresh token function
 const initializeApp = async () => {
   await store.dispatch(
     apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true })

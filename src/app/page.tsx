@@ -1,8 +1,9 @@
 "use client";
 import React, { FC, useState } from "react";
 import Header from "../components/Header";
-import Carousell from "../components/ui/Carousel/Carousel";
 import Heading from "../utils/Heading";
+import Banner from "../components/Home/Banner";
+import Categories from "@/components/Home/Categories";
 interface Props {}
 
 const Page: FC<Props> = (props) => {
@@ -23,7 +24,10 @@ const Page: FC<Props> = (props) => {
         setRoute={setRoute}
         route={route}
       />
-      {/* <Carousell /> */}
+      <Banner setOpen={setOpen} />
+
+      <Categories />
+      
     </div>
   );
 };

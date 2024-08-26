@@ -17,8 +17,16 @@ const Profile: FC<Props> = ({ user }) => {
   const { data: session } = useSession();
 
   const logoutHandler = async () => {
-    session && (await signOut());
-    await logoutUser({ succes: true });
+    try {
+      if (session) {
+        await signOut();
+      }
+      await logoutUser({ succes: true }).unwrap();
+      localStorage.clear();
+      sessionStorage.clear();  
+    } catch (error) {
+      console.error("Failed to logout:", error);
+    }
   };
 
 

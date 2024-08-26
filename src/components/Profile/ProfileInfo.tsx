@@ -32,8 +32,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   const imageHandler = async (e: any) => {
     const formData = new FormData();
     formData.append("avatar", e.target.files[0]);
-
-    updateAvatar(formData);
+    await updateAvatar(formData);
   };
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
       setLoadUser(true);
     }
     if (profileSuccess) {
-      toast.success("Profile updated successfully");
+      toast.success("Profile updated Successfully");
     }
     if (error || profileError) {
       console.log(error);
@@ -52,7 +51,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
     e.preventDefault();
     if (name !== "" && name !== initialName) {
       await editprofile({ name });
-      setInitialName(name); 
+      setInitialName(name);
     } else if (name === initialName) {
       toast.info("No changes made to the name");
     }
