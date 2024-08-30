@@ -1,4 +1,4 @@
-import { styles } from "@/styles/style";
+import { styles } from "../../../styles/style";
 import { Link2Icon, PencilIcon, PlusCircle } from "lucide-react";
 import React, { useState } from "react";
 import { AiOutlineDelete, AiOutlinePlusCircle } from "react-icons/ai";
@@ -215,7 +215,11 @@ const CourseContent: React.FC<Props> = ({
                         value={item.title}
                         onChange={(e) => {
                           const updatedData = [...courseContentData];
-                          updatedData[index].title = e.target.value;
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            title: e.target.value,
+                          };
+
                           setCourseContentData(updatedData);
                         }}
                       />
@@ -229,7 +233,11 @@ const CourseContent: React.FC<Props> = ({
                         value={item.videoUrl}
                         onChange={(e) => {
                           const updatedData = [...courseContentData];
-                          updatedData[index].videoUrl = e.target.value;
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            videoUrl: e.target.value,
+                          };
+
                           setCourseContentData(updatedData);
                         }}
                       />
@@ -243,7 +251,11 @@ const CourseContent: React.FC<Props> = ({
                         value={item.subtitleUrl}
                         onChange={(e) => {
                           const updatedData = [...courseContentData];
-                          updatedData[index].subtitleUrl = e.target.value;
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            subtitleUrl: e.target.value,
+                          };
+
                           setCourseContentData(updatedData);
                         }}
                       />
@@ -260,7 +272,10 @@ const CourseContent: React.FC<Props> = ({
                         value={item.description}
                         onChange={(e) => {
                           const updatedData = [...courseContentData];
-                          updatedData[index].description = e.target.value;
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            description: e.target.value,
+                          };
                           setCourseContentData(updatedData);
                         }}
                       />

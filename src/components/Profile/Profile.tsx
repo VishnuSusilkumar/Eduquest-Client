@@ -4,6 +4,8 @@ import { signOut, useSession } from "next-auth/react";
 import ProfileInfo from "./ProfileInfo";
 import { useLogOutMutation } from "../../../redux/features/auth/authApi";
 import ChangePassword from "./ChangePassword";
+import EnrolledCourses from "./EnrolledCourses";
+import { ProfileSidebar } from "@/constants/enums";
 
 type Props = {
   user: any;
@@ -12,23 +14,15 @@ type Props = {
 const Profile: FC<Props> = ({ user }) => {
   const [scroll, setScroll] = useState(false);
   const [avatar, setAvatar] = useState(null);
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(ProfileSidebar.profileInfo);
   const [logoutUser, { isLoading }] = useLogOutMutation();
   const { data: session } = useSession();
+  console.log("Session", session);
 
   const logoutHandler = async () => {
-    try {
-      if (session) {
-        await signOut();
-      }
-      await logoutUser({ succes: true }).unwrap();
-      localStorage.clear();
-      sessionStorage.clear();  
-    } catch (error) {
-      console.error("Failed to logout:", error);
-    }
+    session && (await signOut());
+    await logoutUser({ succes: true });
   };
-
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
@@ -54,14 +48,19 @@ const Profile: FC<Props> = ({ user }) => {
           logoutHandler={logoutHandler}
         />
       </div>
-      {active === 1 && (
-        <div className="w-full h-full bg-transparent mt-[80px]">
+      {active === ProfileSidebar.profileInfo && (
+        <div className="mt-[80px] h-full w-full bg-transparent  px-8">
           <ProfileInfo avatar={avatar} user={user} />
         </div>
       )}
-      {active === 2 && (
-        <div className="w-full h-full bg-transparent mt-[80px]">
+      {active === ProfileSidebar.changePassword && (
+        <div className="mt-[80px] h-full w-full bg-transparent px-8">
           <ChangePassword />
+        </div>
+      )}
+      {active === ProfileSidebar.enrolledCourses && (
+        <div className="mt-[80px] h-full w-full bg-transparent px-8">
+          <EnrolledCourses />
         </div>
       )}
     </div>

@@ -7,6 +7,7 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { HiAcademicCap } from "react-icons/hi";
 import Link from "next/link";
+import { toast } from "sonner";
 
 type Props = {
   user: any;
@@ -23,6 +24,13 @@ const SidebarProfile: FC<Props> = ({
   logoutHandler,
   setActive,
 }) => {
+  const handleInstructorClick = () => {
+    if (!user.isVerified) {
+      toast.error("Instructor is not verified by admin.");
+    } else {
+      window.location.href = "/instructor";
+    }
+  };
   return (
     <div className="w-full">
       <div
@@ -56,17 +64,17 @@ const SidebarProfile: FC<Props> = ({
           Change Password
         </h5>
       </div>
-      {(user.role === "user" || user.role === "instructor") && (
+      {user.role === "user" && (
         <div
-          className={`w-full h-16 border-b flex items-center px-4 py-4 cursor-pointer hover:bg-blue-gray-50 ${
+          className={`flex h-16 w-full cursor-pointer items-center border-b px-4 py-4 hover:bg-blue-gray-50 ${
             active === 3
-              ? "dark:bg-gray-600 border-b shadow-sm bg-gray-200 "
+              ? "border-b bg-gray-200 shadow-sm dark:bg-gray-600 "
               : "bg-transparent"
           }`}
           onClick={() => setActive(3)}
         >
           <SiCoursera size={20} className="dark:text-white text-black" />
-          <h5 className="pl-6 800px:block hidden font-Poppins dark:text-white text-black text-sm font-thin">
+          <h5 className="hidden pl-6 font-Poppins text-sm  font-thin dark:text-white text-black 800px:block">
             Enrolled Courses
           </h5>
         </div>
@@ -88,15 +96,15 @@ const SidebarProfile: FC<Props> = ({
       )}
 
       {user.role === "instructor" && (
-        <Link
+        <div
           className={`flex h-16 w-full cursor-pointer items-center border-b bg-transparent px-4 py-4 hover:bg-blue-gray-50`}
-          href={"/instructor"}
+          onClick={handleInstructorClick}
         >
           <HiAcademicCap size={20} className="dark:text-white text-black " />
           <h5 className="hidden pl-6 font-Poppins text-sm  font-thin dark:text-white text-black 800px:block">
             Instructor Dashboard
           </h5>
-        </Link>
+        </div>
       )}
 
       <div

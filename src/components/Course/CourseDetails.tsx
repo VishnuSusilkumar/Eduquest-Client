@@ -153,10 +153,10 @@ const CourseDetails: React.FC<Props> = ({
           </div>
           <div className="w-full 800px:w-[35%] relative">
             <div className="sticky top-[100px] left-0 z-50 w-full text-black">
-              {/* <VideoPlayerMemo
+              <VideoPlayerMemo
                 videoUrl={data?.demoUrl}
                 subtitleUrl={data?.subtitleUrl}
-              /> */}
+              />
               <div className="flex items-center">
                 <h1 className="pt-5 text-[21px] font-bold">
                   {data?.price === 0 ? "Free" : <>&#x20b9; {data?.price}</>}
@@ -223,8 +223,8 @@ const CourseDetails: React.FC<Props> = ({
   );
 };
 
-// const VideoPlayerMemo = React.memo(VideoPlayer, (prevProps, nextProps) => {
-//   return prevProps.videoUrl === nextProps.videoUrl;
-// });
+const VideoPlayerMemo = React.memo(VideoPlayer, (prevProps, nextProps) => {
+  return prevProps.videoUrl === nextProps.videoUrl;
+});
 
 export default CourseDetails;

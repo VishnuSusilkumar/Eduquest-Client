@@ -17,11 +17,14 @@ type Props = {
 
 const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   const [name, setName] = useState(user && user.name);
-  const [initialName, setInitialName] = useState(user && user.name); // Store initial name
+  const [initialName, setInitialName] = useState(user && user.name);
   const imageRef = useRef<HTMLInputElement>(null);
   const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
   const [editprofile, { isSuccess: profileSuccess, error: profileError }] =
     useEditProfileMutation();
+  const [userAvatar, setUserAvatar] = useState(
+    user?.avatar || avatar || avatarIcon
+  );
   const [loadUser, setLoadUser] = useState(false);
   const {} = useLoadUserQuery(undefined, { skip: loadUser ? false : true });
 
@@ -32,7 +35,14 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   const imageHandler = async (e: any) => {
     const formData = new FormData();
     formData.append("avatar", e.target.files[0]);
-    await updateAvatar(formData);
+    const response = await updateAvatar(formData);
+
+    if (response?.data) {
+      setUserAvatar(response.data.avatar);
+      toast.success("Avatar updated successfully");
+    } else if (error) {
+      toast.error("Failed to update avatar");
+    }
   };
 
   useEffect(() => {
@@ -62,7 +72,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
       <div className="w-full flex justify-center">
         <div className="relative">
           <Image
-            src={user?.avatar || avatar ? user.avatar || avatar : avatarIcon}
+            src={userAvatar}
             alt=""
             className="w-[120px] h-[120px] cursor-pointer border-[3px] border-[#37a39a] rounded-full"
             width={120}

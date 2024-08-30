@@ -4,26 +4,37 @@ import DashboardHero from "../../../components/Admin/DashboardHero";
 import Heading from "../../../utils/Heading";
 import React, { useEffect, useState } from "react";
 import {
-  useDeleteUserMutation,
   useGetUsersQuery,
+  useBlockUserMutation,
+  useUnBlockUserMutation,
 } from "../../../../redux/features/admin/adminApi";
-import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import BasicTable from "../../../utils/BasicTable";
-import CustomDeleteModal from "@/components/ui/CustomDeleteModal";
+import CustomActionModal from "@/components/Admin/ViewModal/CustomActionModal";
 
 type Props = {};
 
 const page = (props: Props) => {
   const [open, setOpen] = useState(false);
   const [userId, setUserId] = useState("");
+  const [actionType, setActionType] = useState<"block" | "unblock">("block");
 
   const { isLoading, data, refetch } = useGetUsersQuery(
     {},
     { refetchOnMountOrArgChange: true }
   );
-  const [deleteUser, { isLoading: deleteLoading, error, isSuccess }] =
-    useDeleteUserMutation();
+  const [
+    blockUser,
+    { isLoading: blockLoading, error: blockError, isSuccess: blockSuccess },
+  ] = useBlockUserMutation();
+  const [
+    unBlockUser,
+    {
+      isLoading: unBlockLoading,
+      error: unBlockError,
+      isSuccess: unBlockSuccess,
+    },
+  ] = useUnBlockUserMutation();
 
   const columns = [
     {
@@ -45,41 +56,81 @@ const page = (props: Props) => {
         </>
       ),
     },
-
     {
-      header: "Delete",
+      header: "Status",
+      accessorKey: "status",
+      cell: (info: any) => (
+        <>{info.row.original.isBlocked ? "Blocked" : "Active"}</>
+      ),
+    },
+    {
+      header: "Action",
       cell: (info: any) => (
         <>
-          <Trash2
-            size={20}
-            onClick={() => {
-              setOpen(true);
-              setUserId(info.row.original._id);
-            }}
-            className="cursor-pointer"
-          />
+          {info.row.original.isBlocked ? (
+            <button
+              onClick={() => {
+                setUserId(info.row.original._id);
+                setActionType("unblock");
+                setOpen(true);
+              }}
+              className="text-green-600 cursor-pointer"
+            >
+              Unblock
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setUserId(info.row.original._id);
+                setActionType("block");
+                setOpen(true);
+              }}
+              className="text-red-600 cursor-pointer"
+            >
+              Block
+            </button>
+          )}
         </>
       ),
     },
   ];
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success("User deleted Successfully");
+    if (blockSuccess || unBlockSuccess) {
+      toast.success(
+        actionType === "block"
+          ? "User blocked successfully"
+          : "User unblocked successfully"
+      );
       refetch();
     }
-    if (error) {
-      if ("data" in error) {
+
+    if (blockError || unBlockError) {
+      const error = blockError || unBlockError;
+      if (error) {
+        console.error("Error:", error);
         const errorMessage = error as any;
         toast.error(errorMessage.data.message);
       }
     }
-  }, [isSuccess, error]);
-  const handleDelete = async () => {
-    setOpen(!open);
+  }, [blockSuccess, unBlockSuccess, blockError, unBlockError]);
+
+  const handleAction = async () => {
+    setOpen(false);
     const id = userId;
-    await deleteUser(id);
+    try {
+      if (actionType === "block") {
+        const result = await blockUser({ id });
+        console.log("Block User Result:", result);
+      } else {
+        const result = await unBlockUser({ id });
+        console.log("Unblock User Result:", result);
+      }
+    } catch (error) {
+      console.error("Action Error:", error);
+    }
   };
+
   return (
     <div className="min-h-screen bg-gray-200">
       <Heading
@@ -101,11 +152,16 @@ const page = (props: Props) => {
         <Sidebar active={1} />
       </div>
       {open && (
-        <CustomDeleteModal
+        <CustomActionModal
           open={open}
           setOpen={setOpen}
-          handleFunction={handleDelete}
-          text="Are you sure you want to delete this user?"
+          handleFunction={handleAction}
+          text={
+            actionType === "block"
+              ? "Are you sure you want to block this user?"
+              : "Are you sure you want to unblock this user?"
+          }
+          confirmText={actionType === "block" ? "Block User" : "Unblock User"}
         />
       )}
     </div>

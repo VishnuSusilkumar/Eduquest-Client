@@ -49,12 +49,13 @@ const CheckOutForm = ({ setOpen, data, refetch }: Props) => {
       setLoadUser(true);
       setOpen(false);
       refetch();
+      toast.success("Payment Successfull")
       // redirect(`/course/${data._id}`);
     }
     if (error) {
       if ("data" in error) {
         const errorData = error as any;
-        toast.error(errorData.data.message.details);
+        toast.error(errorData.data.message);
       }
     }
   }, [orderData, error]);

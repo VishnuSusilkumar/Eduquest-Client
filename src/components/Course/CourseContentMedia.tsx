@@ -34,10 +34,10 @@ const CourseContentMedia = ({
   );
   return (
     <div className="w-[95%] 800px:w-[86%] py-4 m-auto">
-      {/* <VideoPlayer
+      <VideoPlayer
         subtitleUrl={data[activeVideo]?.subtitleUrl}
         videoUrl={data[activeVideo]?.videoUrl}
-      /> */}
+      />
       <div className="w-full flex items-center justify-between my-3">
         <div
           className={`${styles.button} !w-[unset] !min-h-[40px] !py-[unset] ${
@@ -67,7 +67,7 @@ const CourseContentMedia = ({
           Next
         </div>
       </div>
-      <h1 className="pt-2 text-[25px] font-[600]">
+      <h1 className="pt-2 text-[25px] font-[600] text-black">
         {data[activeVideo]?.title}
       </h1>
       <br />
@@ -86,7 +86,7 @@ const CourseContentMedia = ({
       </div>
       <br />
       {activeBar === 0 && (
-        <p className="text-sm whitespace-pre-line mb-3">
+        <p className="text-sm whitespace-pre-line mb-3 text-black">
           {data[activeVideo]?.description}
         </p>
       )}

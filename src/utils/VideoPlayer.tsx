@@ -28,7 +28,6 @@ const useHls = (src: string, options: Options | null) => {
         options: levels.map((level) => level.height),
         forced: true,
         onChange: (newQuality: number) => {
-          console.log("changes", newQuality);
           levels.forEach((level, levelIndex) => {
             if (level.height === newQuality) {
               hls.current.currentLevel = levelIndex;
@@ -66,13 +65,17 @@ const CustomPlyrInstance = React.forwardRef<
     </video>
   );
 });
-type Props = {
+
+type VideoPlayerProps = {
   videoUrl: string;
   subtitleUrl: string;
 };
-const VideoPlayer: React.FC<Props> = ({ videoUrl, subtitleUrl }) => {
+
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl, subtitleUrl }) => {
   const ref = React.useRef<APITypes>(null);
   const supported = Hls.isSupported();
+  console.log("HLS Supported:", supported);
+  console.log("VideoPlayer urls", videoUrl, subtitleUrl);
 
   return (
     <div className="wrapper">
@@ -90,5 +93,7 @@ const VideoPlayer: React.FC<Props> = ({ videoUrl, subtitleUrl }) => {
     </div>
   );
 };
+
+CustomPlyrInstance.displayName = "CustomPlyrInstance";
 
 export default VideoPlayer;

@@ -1,4 +1,3 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -18,6 +17,7 @@ import { signIn } from "next-auth/react";
 type Props = {
   setRoute: (route: string) => void;
 };
+
 const passwordRules = /^(?=.*[a-z])(?=.*[A-Z])/;
 const passwordNumberRule = /(?=.*[0-9])/;
 
@@ -45,10 +45,15 @@ const schema = Yup.object().shape({
     })
     .matches(passwordNumberRule, { message: "At least one number (0-9)." })
     .required("Please enter your password"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords must match")
+    .required("Please confirm your password"),
 });
 
 const SignUp: React.FC<Props> = ({ setRoute }) => {
-  const [show, setshow] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [register, { data, error, isSuccess }] = useRegisterMutation();
 
   const promise = () => new Promise((resolve) => setTimeout(resolve, 2000));
@@ -57,13 +62,9 @@ const SignUp: React.FC<Props> = ({ setRoute }) => {
   useEffect(() => {
     if (isSuccess) {
       const message = data?.message || "Registration Successful";
-      // toast.success(message)
       toast.promise(promise, {
         loading: "OTP Sending...",
-        success: () => {
-          return `OTP was send to your email address`;
-        },
-        position: "top-center",
+        success: () => `OTP was sent to your email address`,
         error: "Error",
       });
       setRoute("Verification");
@@ -77,26 +78,17 @@ const SignUp: React.FC<Props> = ({ setRoute }) => {
   }, [isSuccess, error]);
 
   const formik = useFormik({
-    initialValues: { name: "", email: "", password: "" },
+    initialValues: { name: "", email: "", password: "", confirmPassword: "" },
     validationSchema: schema,
     onSubmit: async ({ name, email, password }) => {
-      const data = {
-        name,
-        email,
-        password,
-      };
-      dispatch(
-        UserData({
-          email,
-          password,
-          name,
-        })
-      );
+      const data = { name, email, password };
+      dispatch(UserData({ email, password, name }));
       await register(data);
     },
   });
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
+
   return (
     <div className="w-full">
       <h1
@@ -106,7 +98,7 @@ const SignUp: React.FC<Props> = ({ setRoute }) => {
       </h1>
       <form onSubmit={handleSubmit} className="px-8">
         <div className="mb-3">
-          <label className={`${styles.label} `}>Name</label>
+          <label className={`${styles.label}`}>Name</label>
           <input
             type="text"
             name="name"
@@ -144,29 +136,31 @@ const SignUp: React.FC<Props> = ({ setRoute }) => {
         )}
 
         <div className="w-full mt-5 relative">
-          <label className={`${styles.label} `}>Password</label>
+          <label className={`${styles.label}`}>Password</label>
           <input
-            type={!show ? "password" : "text"}
+            type={!showPassword ? "password" : "text"}
             name="password"
             value={values.password}
             onChange={handleChange}
+            onFocus={() => setIsPasswordFocused(true)}
+            onBlur={() => setIsPasswordFocused(false)}
             id="password"
             placeholder="Enter your password"
             className={`${
               errors.password && touched.password && "border-red-500"
             } ${styles.input} text-sm`}
           />
-          {!show ? (
+          {!showPassword ? (
             <AiOutlineEyeInvisible
               size={20}
-              className="absolute bottom-3 right-2 z-1 cursor-pointer"
-              onClick={() => setshow(true)}
+              className="absolute bottom-3 right-2 cursor-pointer"
+              onClick={() => setShowPassword(true)}
             />
           ) : (
             <AiOutlineEye
               size={20}
-              className="absolute bottom-3 right-2 z-1 cursor-pointer"
-              onClick={() => setshow(false)}
+              className="absolute bottom-3 right-2 cursor-pointer"
+              onClick={() => setShowPassword(false)}
             />
           )}
         </div>
@@ -175,15 +169,57 @@ const SignUp: React.FC<Props> = ({ setRoute }) => {
             {errors.password}
           </span>
         )}
-        <p className="text-xs mt-1 text-gray-600">- Uppercase letters (A-Z)</p>
-        <p className="text-xs text-gray-600 ">- Lowercase letters (a-z)</p>
-        <p className="text-xs text-gray-600 ">- Numbers (0-9)</p>
+
+        {isPasswordFocused && (
+          <div>
+            <p className="text-xs mt-1 text-gray-600">
+              - Uppercase letters (A-Z)
+            </p>
+            <p className="text-xs text-gray-600">- Lowercase letters (a-z)</p>
+            <p className="text-xs text-gray-600">- Numbers (0-9)</p>
+          </div>
+        )}
+
+        <div className="w-full mt-5 relative">
+          <label className={`${styles.label}`}>Confirm Password</label>
+          <input
+            type={!showConfirmPassword ? "password" : "text"}
+            name="confirmPassword"
+            value={values.confirmPassword}
+            onChange={handleChange}
+            id="confirmPassword"
+            placeholder="Confirm your password"
+            className={`${
+              errors.confirmPassword &&
+              touched.confirmPassword &&
+              "border-red-500"
+            } ${styles.input} text-sm`}
+          />
+          {!showConfirmPassword ? (
+            <AiOutlineEyeInvisible
+              size={20}
+              className="absolute bottom-3 right-2 cursor-pointer"
+              onClick={() => setShowConfirmPassword(true)}
+            />
+          ) : (
+            <AiOutlineEye
+              size={20}
+              className="absolute bottom-3 right-2 cursor-pointer"
+              onClick={() => setShowConfirmPassword(false)}
+            />
+          )}
+        </div>
+        {errors.confirmPassword && touched.confirmPassword && (
+          <span className="text-red-500 pt-1 text-sm block">
+            {errors.confirmPassword}
+          </span>
+        )}
 
         <div className="w-full mt-10">
           <input
             type="submit"
             value="Sign Up"
-            className={`${styles.button} text-white font-thin py-3 `}
+            className={`${styles.button} text-white font-thin py-3`}
           />
         </div>
         <br />
@@ -208,7 +244,7 @@ const SignUp: React.FC<Props> = ({ setRoute }) => {
         <h5 className="text-center pt-4 font-Poppins text-[14px]">
           Already have an account?{" "}
           <span
-            className="text-[#2190ff] pl-1 cursor-pointer "
+            className="text-[#2190ff] pl-1 cursor-pointer"
             onClick={() => setRoute("Login")}
           >
             Sign in

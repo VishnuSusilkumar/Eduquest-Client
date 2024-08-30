@@ -4,24 +4,20 @@ import { useSelector } from "react-redux";
 
 export const navItemsData = [
   {
-    name: "Home",
+    name: "Home +",
     url: "/",
   },
   {
-    name: "Courses",
+    name: "Course +",
     url: "/courses",
   },
   {
-    name: "About",
-    url: "/about",
+    name: "About +",
+    url: "/#aboutus",
   },
   {
     name: "Become a Instructor",
     url: "/instructor/register",
-  },
-  {
-    name: "FAQ",
-    url: "/faq",
   },
 ];
 
@@ -34,60 +30,63 @@ type Props = {
 const NavItems: React.FC<Props> = ({ activeItem, isMobile, user }) => {
   return (
     <>
-      <div className="hidden 800px:flex px-3">
+      <div className="hidden px-3 800px:flex">
         {navItemsData &&
           navItemsData.map((i, index) =>
-            i.name === "Become a Instructor" && user && user.role === "user" ? (
+            i.name === "Become a Instructor" &&
+            user &&
+            user.role === "user" ? (
               <Link href={`${i.url}`} key={index} passHref>
-                <span
+                <div
                   className={`
                             ${
                               activeItem === index
-                                ? "dark:text-[#37a39a] text-[crimson]"
-                                : "dark:text-white text-black"
-                            }  text-[16px] px-4 font-Poppins font-[400]`}
+                                ? "font-[550] "
+                                : "text-black "
+                            }  w-44 text-center font-Poppins  text-[14px] font-[400] tracking-wide hover:font-[600]`}
                 >
-                  {i.name}
-                </span>
+                  <span>{i.name}</span>
+                </div>
               </Link>
             ) : (
               i.name !== "Become a Instructor" && (
                 <Link href={`${i.url}`} key={index} passHref>
-                  <span
+                  <div
                     className={`
                             ${
                               activeItem === index
-                                ? "dark:text-[#37a39a] text-[crimson]"
-                                : "dark:text-white text-black"
-                            }  text-[16px] px-4 font-Poppins font-[400]`}
+                                ? "font-[550]  text-black"
+                                : "text-black"
+                            }  w-24 text-center font-Poppins  text-[14px] font-[400] tracking-wide hover:font-[600]`}
                   >
-                    {i.name}
-                  </span>
+                    <span>{i.name}</span>
+                  </div>
                 </Link>
               )
             )
           )}
       </div>
+
       {isMobile && (
-        <div className="800px:hidden mt-5">
-          <div className="w-full text-center py-6">
+        <div className="mt-5 800px:hidden">
+          <div className="w-full py-6 text-center">
             <Link href="/" passHref>
-              <span className="text-[25px] font-Poppins font-[500] text-black dark:text-white">
+              <span className="font-Poppins text-[25px] font-[500] text-black ">
                 Eduquest
               </span>
             </Link>
           </div>
           {navItemsData &&
             navItemsData.map((i, index) => (
-              <Link href="/" passHref key={index}>
+              <Link href={i.url} passHref key={index}>
                 <span
                   className={`
                                 ${
                                   activeItem === index
-                                    ? "dark:text-[#37a39a] text-[crimson]"
-                                    : "dark:text-white text-black"
+                                    ? "text-[#FDC021] dark:text-[#37a39a]"
+                                    : "text-black "
                                 }
-                                block py-5 text-[16px] px-6 font-Poppins font-[400]`}
+                                block px-6 py-5 font-Poppins text-[16px] font-[400]`}
                 >
                   {i.name}
                 </span>

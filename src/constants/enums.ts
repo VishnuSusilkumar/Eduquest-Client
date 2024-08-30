@@ -16,4 +16,5 @@ export enum EISidebar {
 export enum ProfileSidebar {
   profileInfo = 1,
   changePassword = 2,
+  enrolledCourses = 3
 }

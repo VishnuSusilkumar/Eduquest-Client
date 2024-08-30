@@ -27,6 +27,8 @@ const CourseDetailsPage = ({ id }: Props) => {
   useEffect(() => {
     if (config) {
       const publishKey = config.publishKey;
+      console.log("publish", publishKey);
+      
       setStripePromise(loadStripe(publishKey));
     }
     if (data) {

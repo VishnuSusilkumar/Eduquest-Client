@@ -2,27 +2,62 @@
 import Sidebar from "../../../components/Admin/Sidebar/Sidebar";
 import DashboardHero from "../../../components/Admin/DashboardHero";
 import Heading from "../../../utils/Heading";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  useDeleteUserMutation,
   useGetInstructorsQuery,
+  useGetInstructorDataQuery,
+  useVerifyUserMutation,
+  useBlockUserMutation,
+  useUnBlockUserMutation,
 } from "../../../../redux/features/admin/adminApi";
-import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import BasicTable from "../../../utils/BasicTable";
-import CustomDeleteModal from "@/components/ui/CustomDeleteModal";
+import CustomActionModal from "@/components/Admin/ViewModal/CustomActionModal";
+import CustomVerifyModal from "@/components/Admin/ViewModal/CustomVerifyModal";
+import ViewModal from "@/components/Admin/ViewModal/ViewModal";
 
 type Props = {};
 
-const page = (props: Props) => {
-  const [open, setOpen] = useState(false);
+const Page = (props: Props) => {
+  const [openActionModal, setOpenActionModal] = useState(false);
+  const [openViewModal, setOpenViewModal] = useState(false);
+  const [openVerify, setOpenVerify] = useState(false);
   const [userId, setUserId] = useState("");
+  const [actionType, setActionType] = useState<"block" | "unblock">("block");
+  const [selectedInstructorId, setSelectedInstructorId] = useState<
+    string | null
+  >(null);
+
   const { isLoading, data, refetch } = useGetInstructorsQuery(
     {},
     { refetchOnMountOrArgChange: true }
   );
-  const [deleteUser, { isLoading: deleteLoading, error, isSuccess }] =
-    useDeleteUserMutation();
+
+  const [
+    verifyUser,
+    { isLoading: verifyLoading, isSuccess: verifySuccess, error: verifyError },
+  ] = useVerifyUserMutation();
+
+  const [
+    blockInstructor,
+    { isLoading: blockLoading, error: blockError, isSuccess: blockSuccess },
+  ] = useBlockUserMutation();
+
+  const [
+    unBlockInstructor,
+    {
+      isLoading: unBlockLoading,
+      error: unBlockError,
+      isSuccess: unBlockSuccess,
+    },
+  ] = useUnBlockUserMutation();
+
+  const { data: instructorData } = useGetInstructorDataQuery(
+    selectedInstructorId || "",
+    {
+      skip: !selectedInstructorId,
+    }
+  );
 
   const columns = [
     {
@@ -47,41 +82,117 @@ const page = (props: Props) => {
     {
       header: "Verified",
       accessorKey: "isVerified",
+      cell: (info: any) => (
+        <span
+          onClick={() => {
+            if (!info.row.original.isVerified) {
+              setUserId(info.row.original._id);
+              setOpenVerify(true);
+            }
+          }}
+          className={`${
+            info.row.original.isVerified
+              ? "text-green-500"
+              : "text-red-500 cursor-pointer"
+          }`}
+        >
+          {info.row.original.isVerified ? "Verified" : "Verify"}
+        </span>
+      ),
     },
     {
-      header: "Delete",
+      header: "Actions",
       cell: (info: any) => (
-        <>
-          <Trash2
-            size={20}
+        <div className="flex items-center">
+          <span
             onClick={() => {
-              setOpen(true);
-              setUserId(info.row.original._id);
+              setSelectedInstructorId(info.row.original._id);
+              setOpenViewModal(true);
             }}
-            className="cursor-pointer"
-          />
-        </>
+            className="mr-4 text-blue-500 cursor-pointer"
+          >
+            View
+          </span>
+          {info.row.original.isBlocked ? (
+            <button
+              onClick={() => {
+                setUserId(info.row.original._id);
+                setActionType("unblock");
+                setOpenActionModal(true);
+              }}
+              className="text-green-600 cursor-pointer"
+            >
+              Unblock
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setUserId(info.row.original._id);
+                setActionType("block");
+                setOpenActionModal(true);
+              }}
+              className="text-red-600 cursor-pointer"
+            >
+              Block
+            </button>
+          )}
+        </div>
       ),
     },
   ];
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success("Instructor deleted Successfully");
+    if (blockSuccess || unBlockSuccess) {
+      toast.success(
+        actionType === "block"
+          ? "Instructor blocked successfully"
+          : "Instructor unblocked successfully"
+      );
       refetch();
     }
-    if (error) {
-      if ("data" in error) {
+
+    if (blockError || unBlockError) {
+      const error = blockError || unBlockError;
+      if (error) {
+        console.error("Error:", error);
         const errorMessage = error as any;
         toast.error(errorMessage.data.message);
       }
     }
-  }, [isSuccess, error]);
-  const handleDelete = async () => {
-    setOpen(!open);
+  }, [blockSuccess, unBlockSuccess, blockError, unBlockError]);
+
+  useEffect(() => {
+    if (verifySuccess) {
+      toast.success("Instructor verified successfully");
+      refetch();
+    }
+    if (verifyError) {
+      if ("data" in verifyError) {
+        const errorMessage = verifyError as any;
+        toast.error(errorMessage.data.message);
+      }
+    }
+  }, [verifySuccess, verifyError]);
+
+  const handleAction = async () => {
+    setOpenActionModal(false);
     const id = userId;
-    await deleteUser(id);
+    try {
+      if (actionType === "block") {
+        await blockInstructor({ id });
+      } else {
+        await unBlockInstructor({ id });
+      }
+    } catch (error) {
+      console.error("Action Error:", error);
+    }
   };
+
+  const handleVerifyUser = async () => {
+    setOpenVerify(false);
+    await verifyUser({ id: userId });
+  };
+
   return (
     <div className="min-h-screen bg-gray-200">
       <Heading
@@ -90,7 +201,7 @@ const page = (props: Props) => {
         keywords="Programming, MERN, Redux"
       />
       <div className="flex mx-auto z-[9999]">
-        <div className="mx-auto pl-14 mt-20 w-[85%] ">
+        <div className="mx-auto pl-14 mt-20 w-[85%]">
           <DashboardHero />
           {data && (
             <div
@@ -102,16 +213,38 @@ const page = (props: Props) => {
         </div>
         <Sidebar active={2} />
       </div>
-      {open && (
-        <CustomDeleteModal
-          open={open}
-          setOpen={setOpen}
-          handleFunction={handleDelete}
-          text="Are you sure you want to delete this instructor?"
+      {openActionModal && (
+        <CustomActionModal
+          open={openActionModal}
+          setOpen={setOpenActionModal}
+          handleFunction={handleAction}
+          text={
+            actionType === "block"
+              ? "Are you sure you want to block this instructor?"
+              : "Are you sure you want to unblock this instructor?"
+          }
+          confirmText={
+            actionType === "block" ? "Block Instructor" : "Unblock Instructor"
+          }
+        />
+      )}
+      {openVerify && (
+        <CustomVerifyModal
+          open={openVerify}
+          setOpen={setOpenVerify}
+          handleFunction={handleVerifyUser}
+          text="Are you sure you want to verify this instructor?"
+        />
+      )}
+      {openViewModal && (
+        <ViewModal
+          open={openViewModal}
+          setOpen={setOpenViewModal}
+          instructorData={instructorData}
         />
       )}
     </div>
   );
 };
 
-export default page;
+export default Page;
