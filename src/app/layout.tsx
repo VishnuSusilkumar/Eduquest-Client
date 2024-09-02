@@ -7,8 +7,8 @@ import { Toaster } from "sonner";
 import { Providers } from "./Provider";
 import { SessionProvider } from "next-auth/react";
 import { useLoadUserQuery } from "../../redux/features/api/apiSlice";
-import { FC } from "react";
-import { BeatLoader } from "react-spinners";
+import { FC, useEffect } from "react";
+import { socketId } from "@/utils/socket";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -35,9 +35,10 @@ export default function RootLayout({
         <Providers>
           <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              {/* <Custom>{children}</Custom> */}
-              {children}
-              <Toaster position="top-center" />
+              <SocketProvider>
+                {children}
+                <Toaster position="top-center" />
+              </SocketProvider>
             </ThemeProvider>
           </SessionProvider>
         </Providers>
@@ -46,7 +47,9 @@ export default function RootLayout({
   );
 }
 
-const Custom: FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isLoading } = useLoadUserQuery({});
-  return <>{isLoading ? <BeatLoader /> : <>{children}</>}</>;
+const SocketProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
+  useEffect(() => {
+    socketId.on("connection", () => {});
+  }, []);
+  return <>{children}</>;
 };

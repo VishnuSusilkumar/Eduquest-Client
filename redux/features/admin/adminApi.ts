@@ -45,6 +45,21 @@ export const adminApi = apiSlice.injectEndpoints({
         credentials: "include" as const,
       }),
     }),
+    addFAQ: builder.mutation({
+      query: (questions) => ({
+        url: "admin/add-faq",
+        method: "POST",
+        body: questions,
+        credentials: "include" as const,
+      }),
+    }),
+    getFAQ: builder.query({
+      query: () => ({
+        url: "admin/get-faq",
+        method: "GET",
+        credentials: "include" as const,
+      }),
+    }),
     verifyUser: builder.mutation({
       query: ({ id }) => ({
         url: `admin/verify-user/${id}`,
@@ -75,6 +90,8 @@ export const {
   useGetInstructorsQuery,
   useAddCategoriesMutation,
   useGetCategoriesQuery,
+  useAddFAQMutation,
+  useGetFAQQuery,
   useGetInstructorDataQuery,
   useVerifyUserMutation,
   useBlockUserMutation,

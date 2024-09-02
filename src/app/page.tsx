@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Heading from "../utils/Heading";
 import Banner from "../components/Home/Banner";
 import Categories from "@/components/Home/Categories";
+import FAQ from "@/components/Home/FAQ";
 interface Props {}
 
 const Page: FC<Props> = (props) => {
@@ -27,7 +28,7 @@ const Page: FC<Props> = (props) => {
       <Banner setOpen={setOpen} />
 
       <Categories />
-      
+      <FAQ />
     </div>
   );
 };

@@ -71,6 +71,7 @@ const EditCourse: React.FC<Props> = ({ id }) => {
     level: "",
     demoUrl: "",
     subtitleUrl: "",
+    category: "",
     thumbnail: "",
     thumbnailFile: "",
   });
@@ -99,6 +100,7 @@ const EditCourse: React.FC<Props> = ({ id }) => {
         level: editCourseData.level,
         demoUrl: editCourseData.demoUrl,
         subtitleUrl: editCourseData.subtitleUrl,
+        category: editCourseData?.category || "",
         thumbnail: editCourseData?.thumbnail,
         thumbnailFile: "",
       });
@@ -141,6 +143,7 @@ const EditCourse: React.FC<Props> = ({ id }) => {
       level: courseInfo.level,
       demoUrl: courseInfo.demoUrl,
       subtitleUrl: courseInfo.subtitleUrl,
+      category: courseInfo.category,
       totalVideos: courseContentData.length,
       benefits: formattedBenefits,
       prerequisites: formattedprerequisites,
@@ -161,6 +164,7 @@ const EditCourse: React.FC<Props> = ({ id }) => {
     formData.append("level", data.level);
     formData.append("demoUrl", data.demoUrl);
     formData.append("subtitleUrl", data.subtitleUrl);
+    formData.append("category", data.category);
     formData.append("totalVideos", data.totalVideos);
     formData.append("benefits", JSON.stringify(data.benefits));
     formData.append("prerequisites", JSON.stringify(data.prerequisites));

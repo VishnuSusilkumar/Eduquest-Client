@@ -1,6 +1,8 @@
 import Link from "next/link";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { socketId } from "./socket";
+import { SignalIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
 
 export const navItemsData = [
   {
@@ -28,6 +30,29 @@ type Props = {
 };
 
 const NavItems: React.FC<Props> = ({ activeItem, isMobile, user }) => {
+  const [streamId, setStreamId] = useState("");
+  const router = useRouter();
+  const handleNotification = (data: any) => {
+    const isAnyCourseIdMatching = user?.courses?.some((userCourse: any) =>
+      data?.courses?.some(
+        (course: any) => course.courseId === userCourse.courseId
+      )
+    );
+    if (isAnyCourseIdMatching) {
+      setStreamId(data.streamId);
+    }
+  };
+
+  useEffect(() => {
+    socketId.on("joinStream", (data) => {
+      handleNotification(data);
+    });
+
+    return () => {
+      socketId.off("joinStream");
+    };
+  }, [user]);
+
   return (
     <>
       <div className="hidden px-3 800px:flex">
@@ -35,7 +60,8 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile, user }) => {
           navItemsData.map((i, index) =>
             i.name === "Become a Instructor" &&
             user &&
-            user.role === "user" ? (
+            user.role === "user" &&
+            !user.courses ? (
               <Link href={`${i.url}`} key={index} passHref>
                 <div
                   className={`
@@ -65,6 +91,15 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile, user }) => {
               )
             )
           )}
+        {streamId && (
+          <Link
+            className="relative mr-8 cursor-pointer "
+            href={`/live/?caller-id=${streamId}`}
+          >
+            <SignalIcon className="cursor-pointer h-5 w-5 text-2xl text-black" />
+            <span className="absolute -right-0 -top-0 flex h-[7px] w-[7px] items-center justify-center rounded-full bg-[#3ccba0] text-xs text-white"></span>
+          </Link>
+        )}
       </div>
 
       {isMobile && (

@@ -60,6 +60,7 @@ const CreateCourse = (props: Props) => {
     level: "",
     demoUrl: "",
     subtitleUrl: "",
+    category: "",
     thumbnail: "",
     thumbnailFile: "",
   });
@@ -106,6 +107,7 @@ const CreateCourse = (props: Props) => {
       price: courseInfo.price,
       estimatedPrice: courseInfo.estimatedPrice,
       tags: courseInfo.tags,
+      category: courseInfo.category,
       thumbnail: courseInfo.thumbnailFile,
       level: courseInfo.level,
       demoUrl: courseInfo.demoUrl,
@@ -129,6 +131,7 @@ const CreateCourse = (props: Props) => {
     formData.append("tags", data.tags);
     formData.append("level", data.level);
     formData.append("demoUrl", data.demoUrl);
+    formData.append("category", data.category);
     formData.append("subtitleUrl", data.subtitleUrl);
     formData.append("totalVideos", data.totalVideos);
     formData.append("benefits", JSON.stringify(data.benefits));

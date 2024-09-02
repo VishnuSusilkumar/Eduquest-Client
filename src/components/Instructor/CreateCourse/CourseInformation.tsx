@@ -1,5 +1,6 @@
-import { styles } from "@/styles/style";
+import { styles } from "../../../styles/style";
 import React, { useState } from "react";
+import { useGetCategoriesQuery } from "../../../../redux/features/admin/adminApi";
 
 type Props = {
   active: number;
@@ -15,6 +16,8 @@ const CourseInformation: React.FC<Props> = ({
   setCourseInfo,
 }) => {
   const [dragging, setDragging] = useState(false);
+  const { data: categories } = useGetCategoriesQuery(undefined, {});
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setActive(active + 1);
@@ -202,6 +205,27 @@ const CourseInformation: React.FC<Props> = ({
               className={`${styles.input} `}
             />
           </div>
+        </div>
+        <div className="w-full mt-4">
+          <label htmlFor="level">Category</label>
+          <select
+            name="level"
+            required
+            value={courseInfo.category}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              setCourseInfo({ ...courseInfo, category: e.target.value })
+            }
+            id="level"
+            className={`${styles.input} `}
+          >
+            <option value="">Select Category</option>
+            {categories &&
+              categories.map((item: any, index: number) => (
+                <option value={item.category} key={index}>
+                  {item.category}
+                </option>
+              ))}
+          </select>
         </div>
         <br />
 

@@ -53,6 +53,13 @@ const Sidebar: React.FC<Props> = ({ active }) => {
         />
 
         <SidebarItem
+          icon={<SignalIcon className="w-7" />}
+          text={"Go Live"}
+          routerPath="/instructor/live-session"
+          active={active === EISidebar.live ? true : false}
+        />
+        
+        <SidebarItem
           icon={<HomeIcon className="w-6" />}
           text={"Home"}
           routerPath="/"
