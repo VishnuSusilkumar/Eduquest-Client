@@ -1,45 +1,77 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import UserStream from "../Stream/UserStream";
 import Chat from "../Chat/Chat";
+import { socketId } from "../../../utils/socket";
+import { useRouter } from "next/navigation";
+import { FaPhoneSlash } from "react-icons/fa";
 
 type Props = {
   streamId: string;
 };
 
 const RoomUser = ({ streamId }: Props) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleStreamEnd = () => {
+      localStorage.removeItem("activeStreamId");
+      router.push("/");
+    };
+
+    socketId.on("streamEnded", (data) => {
+      if (data.streamId === streamId) {
+        handleStreamEnd();
+      }
+    });
+
+    return () => {
+      socketId.off("streamEnded");
+    };
+  }, [streamId, router]);
+
+  const handleExit = () => {
+    router.push("/");
+  };
+
   return (
-    <main className=" h-(calc(100vh - 74px)) relative w-full bg-gray-900 text-white">
-      <div className="relative flex gap-12">
-        <section className="fixed z-50 h-full w-11/12 max-w-56 overflow-y-auto border-r border-gray-600 bg-gray-900">
-          <div className="fixed flex w-56 items-center justify-around bg-gray-800 px-4 text-base">
-            <p>Participants</p>
-            <strong className="rounded bg-gray-800 px-4 py-2 text-sm font-semibold">
-              27
-            </strong>
+    <main className="relative h-screen w-screen bg-gray-900 text-white">
+      <section className="fixed left-0 top-0 h-full w-1/4 max-w-xs overflow-y-auto border-r border-gray-600 bg-gray-900">
+        <div className="flex w-full items-center justify-around bg-gray-800 px-4 py-2 text-base">
+          <p>Participants</p>
+          <strong className="rounded bg-gray-800 px-4 py-2 text-sm font-semibold">
+            10
+          </strong>
+        </div>
+
+        <div className="pt-16 pb-4 flex flex-col gap-4">
+          <div className="flex items-center gap-4 pl-4">
+            <span className="h-2 w-2 rounded-full bg-green-500"></span>
+            <p className="text-sm">Sulammita</p>
           </div>
-
-          <div className="pb-26 flex flex-col gap-4 pt-20">
-            <div className="flex items-center gap-4 pl-4">
-              <span className="h-2 w-2 rounded-full bg-green-500"></span>
-              <p className="text-sm">Sulammita</p>
-            </div>
-
-            <div className="flex items-center gap-4 pl-4">
-              <span className="h-2 w-2 rounded-full bg-green-500"></span>
-              <p className="text-sm ">Dennis Ivy</p>
-            </div>
+          <div className="flex items-center gap-4 pl-4">
+            <span className="h-2 w-2 rounded-full bg-green-500"></span>
+            <p className="text-sm">Dennis Ivy</p>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className=" bottom-0 left-1/2 flex !h-[54rem] !w-full max-w-[55%] -translate-x-1/2 transform items-center justify-center border-l border-gray-700 bg-gray-900 px-4 py-2 text-white sm:relative sm:h-auto sm:w-full sm:border-l-0 sm:border-t sm:border-gray-700 ">
-          <div className="w-full">
-            <UserStream callerid={streamId} />
-          </div>
-        </section>
-
+      <section className="fixed right-0 top-0 h-full w-1/4 max-w-xs overflow-y-auto border-l border-gray-700 bg-gray-900">
         <Chat callId={streamId} isUser={true} />
-      </div>
+      </section>
+
+      <section className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2/4 h-3/4 bg-gray-800 border border-gray-600">
+        <UserStream callid={streamId} />
+      </section>
+
+      <section className="absolute left-1/2 top-[calc(50%+10rem)] transform -translate-x-1/2">
+        <button
+          onClick={handleExit}
+          className="p-2 text-white bg-red-500 rounded shadow-md hover:bg-red-600"
+        >
+          <FaPhoneSlash size={20} />
+        </button>
+      </section>
     </main>
   );
 };

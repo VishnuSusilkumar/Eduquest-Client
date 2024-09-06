@@ -30,28 +30,43 @@ type Props = {
 };
 
 const NavItems: React.FC<Props> = ({ activeItem, isMobile, user }) => {
-  const [streamId, setStreamId] = useState("");
+  const [streamId, setStreamId] = useState<string | null>(null);
   const router = useRouter();
+
   const handleNotification = (data: any) => {
     const isAnyCourseIdMatching = user?.courses?.some((userCourse: any) =>
       data?.courses?.some(
         (course: any) => course.courseId === userCourse.courseId
       )
     );
+
     if (isAnyCourseIdMatching) {
       setStreamId(data.streamId);
+      localStorage.setItem("activeStreamId", data.streamId);
+    }
+  };
+
+  const handleStreamEnd = (data: any) => {
+    if (data.streamId === streamId) {
+      setStreamId(null);
+      localStorage.removeItem("activeStreamId");
     }
   };
 
   useEffect(() => {
-    socketId.on("joinStream", (data) => {
-      handleNotification(data);
-    });
+    const savedStreamId = localStorage.getItem("activeStreamId");
+    if (savedStreamId) {
+      setStreamId(savedStreamId);
+    }
+
+    socketId.on("joinStream", handleNotification);
+    socketId.on("streamEnded", handleStreamEnd);
 
     return () => {
-      socketId.off("joinStream");
+      socketId.off("joinStream", handleNotification);
+      socketId.off("streamEnded", handleStreamEnd);
     };
-  }, [user]);
+  }, [user, streamId]);
 
   return (
     <>
@@ -61,7 +76,7 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile, user }) => {
             i.name === "Become a Instructor" &&
             user &&
             user.role === "user" &&
-            !user.courses ? (
+            user.courses.length === 0 ? (
               <Link href={`${i.url}`} key={index} passHref>
                 <div
                   className={`
@@ -93,7 +108,7 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile, user }) => {
           )}
         {streamId && (
           <Link
-            className="relative mr-8 cursor-pointer "
+            className="relative mr-8 cursor-pointer"
             href={`/live/?caller-id=${streamId}`}
           >
             <SignalIcon className="cursor-pointer h-5 w-5 text-2xl text-black" />

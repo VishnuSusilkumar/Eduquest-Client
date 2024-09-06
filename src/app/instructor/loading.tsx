@@ -15,8 +15,8 @@ const Loading = (props: Props) => {
   const isRegister = path === "/instructor/register";
   return (
     <div>
-      {!isRegister && <Sidebar active={7} />}
-      {isRegister && (
+      {/* {!isRegister && <Sidebar active={7} />}
+      {isRegister && ( */}
         <Header
           open={open}
           setOpen={setOpen}
@@ -24,7 +24,7 @@ const Loading = (props: Props) => {
           setRoute={setRoute}
           route={route}
         />
-      )}
+      {/* )} */}
       <Loader />
     </div>
   );

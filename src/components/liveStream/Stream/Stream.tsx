@@ -28,9 +28,10 @@ const client = new StreamVideoClient({ apiKey, user, token });
 
 type Props = {
   callid: string;
+  onExit: () => void;
 };
 
-const Stream = ({ callid }: Props) => {
+const Stream = ({ callid, onExit }: Props) => {
   const call = client.call("livestream", callid);
   const hasJoined = useRef(false);
 
@@ -61,13 +62,13 @@ const Stream = ({ callid }: Props) => {
   return (
     <StreamVideo client={client}>
       <StreamCall call={call}>
-        <MyLiveStreamUI callid={callid} />
+        <MyLiveStreamUI callid={callid} onExit={onExit} />
       </StreamCall>
     </StreamVideo>
   );
 };
 
-export const MyLiveStreamUI = ({ callid }: any) => {
+export const MyLiveStreamUI = ({ callid, onExit }: any) => {
   const { user } = useSelector((state: any) => state.auth);
   const call = useCall();
   const { useIsCallLive, useLocalParticipant, useParticipantCount } =
@@ -110,9 +111,16 @@ export const MyLiveStreamUI = ({ callid }: any) => {
                 console.error("Error going live:", error);
               });
             } else {
-              call?.endCall().catch((error) => {
-                console.error("Error ending call:", error);
-              });
+              // Emit endStream event
+              socketId.emit("endStream", { callid });
+              call
+                ?.endCall()
+                .then(() => {
+                  onExit();
+                })
+                .catch((error) => {
+                  console.error("Error ending call:", error);
+                });
             }
           }}
         >

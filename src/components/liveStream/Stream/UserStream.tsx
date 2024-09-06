@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   LivestreamLayout,
   StreamCall,
   StreamVideo,
   StreamVideoClient,
-  type User,
 } from "@stream-io/video-react-sdk";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 
@@ -13,25 +12,36 @@ const token =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiTWFyYV9KYWRlIiwiaXNzIjoiaHR0cHM6Ly9wcm9udG8uZ2V0c3RyZWFtLmlvIiwic3ViIjoidXNlci9NYXJhX0phZGUiLCJpYXQiOjE3MjUyNTYzMzksImV4cCI6MTcyNTg2MTE0NH0.tgnieFqYetqmZ1e19UFa9HxCljCVjkXQAA1PvhNvGXs";
 const userId = "Mara_Jade";
 
-const user: User = {
-  id: userId,
-  name: "Oliver",
-  image: "https://getstream.io/random_svg/?id=oliver&name=Oliver",
-};
-
-const client = new StreamVideoClient({ apiKey, user, token });
+const client = new StreamVideoClient({
+  apiKey,
+  token,
+  user: { id: userId },
+});
 
 type Props = {
-  callerid: string;
+  callid: string;
 };
 
-const UserStream = ({ callerid }: Props) => {
-  const call = client.call("livestream", callerid);
+const UserStream = ({ callid }: Props) => {
+  const call = client.call("livestream", callid);
 
-  call.camera.disable();
-  call.microphone.disable();
+  useEffect(() => {
+    const joinCall = async () => {
+      try {
+        await call.join();
+      } catch (error) {
+        console.error("Error joining call:", error);
+      }
+    };
 
-  call.join({ create: true });
+    joinCall();
+
+    return () => {
+      call.leave().catch((error) => {
+        console.error("Error leaving call:", error);
+      });
+    };
+  }, [callid, call]);
 
   return (
     <StreamVideo client={client}>

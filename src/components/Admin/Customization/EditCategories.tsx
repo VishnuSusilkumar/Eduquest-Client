@@ -107,7 +107,7 @@ const EditCategories = (props: Props) => {
       <div
         className={`${
           styles.button
-        } !w-[100px] !min-h-[35px] !h-[35px] text-white font-thin bg-[#cccccc34] mt-4 !text-sm justify-end items-center float-right
+        } !w-[100px] !min-h-[35px] !h-[35px] bg-black text-white font-thin bg-[#cccccc34] mt-4 !text-sm justify-end items-center float-right
         ${
           areCategoriesUnchanged(data, categories) ||
           isAnyCategoryEmpty(categories)

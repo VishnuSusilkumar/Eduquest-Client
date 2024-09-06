@@ -17,13 +17,6 @@ const Page = (props: Props) => {
   return (
     <>
       <Heading title={` Live Session | Eduquest`} description="" keywords="" />
-      <Header
-        open={open}
-        setOpen={setOpen}
-        activeItem={-1}
-        setRoute={setRoute}
-        route={route}
-      />
       <div className="mx-auto  bg-gray-50 ">
         {streamId && <RoomUser streamId={streamId} />}
       </div>

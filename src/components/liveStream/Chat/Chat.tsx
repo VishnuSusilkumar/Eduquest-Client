@@ -16,12 +16,10 @@ const Chat = ({ callId }: Props) => {
   const handleSendMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (msg.length) {
-      // Emit the message
       socketId.emit("sendMessage", {
         callId,
         content: { name: user.name, message: msg },
       });
-      // Add the message locally
       setChats((prev: any) => [
         ...prev,
         { name: user.name, message: msg, self: true },
@@ -31,7 +29,6 @@ const Chat = ({ callId }: Props) => {
   };
 
   const handleReceiveMessage = (data: any) => {
-    // Only add the message if it wasn't sent by the current user
     if (data.callId === callId && data.content.name !== user.name) {
       setChats((prev: any) => [...prev, { ...data.content, self: false }]);
     }
