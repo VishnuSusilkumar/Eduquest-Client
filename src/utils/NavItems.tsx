@@ -108,10 +108,10 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile, user }) => {
           )}
         {streamId && (
           <Link
-            className="relative mr-8 cursor-pointer"
+            className="relative mr-8 ml-3 cursor-pointer text-center font-Poppins  text-[14px] font-[400] tracking-wide hover:font-[600]"
             href={`/live/?caller-id=${streamId}`}
-          >
-            <SignalIcon className="cursor-pointer h-5 w-5 text-2xl text-black" />
+          >Join +
+            {/* <SignalIcon className="cursor-pointer h-5 w-5 text-2xl text-black" /> */}
             <span className="absolute -right-0 -top-0 flex h-[7px] w-[7px] items-center justify-center rounded-full bg-[#3ccba0] text-xs text-white"></span>
           </Link>
         )}

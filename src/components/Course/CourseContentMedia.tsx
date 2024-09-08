@@ -135,7 +135,7 @@ const CourseContentMedia = ({
   useEffect(() => {
     if (isSuccess) {
       setQuestion("");
-      courseRefetch();
+      refetch();
       toast.success("Question added successfully");
       socketId.emit("notification", {
         title: "New Question",
@@ -144,7 +144,7 @@ const CourseContentMedia = ({
     }
 
     if (answerSuccess) {
-      courseRefetch();
+      refetch();
       toast.success("Answer added successfully");
       setAnswer("");
     }
@@ -182,10 +182,10 @@ const CourseContentMedia = ({
     }
   }, [
     isSuccess,
-    error,
-    answerSuccess,
     answerSuccess,
     reviewSuccess,
+    error,
+    answerError,
     reviewError,
   ]);
 

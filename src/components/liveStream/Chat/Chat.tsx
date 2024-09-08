@@ -52,7 +52,7 @@ const Chat = ({ callId }: Props) => {
 
   return (
     <section
-      className="absolute right-0 top-0 w-full max-w-xs overflow-y-auto border-l border-gray-700 bg-gray-900 text-sm pb-20"
+      className="absolute right-0 top-0 w-full max-w-xs overflow-y-auto border-l border-gray-300 bg-white text-sm pb-20"
       style={{ height: "calc(100vh - 80px)" }}
       ref={chatContainerRef}
     >
@@ -67,8 +67,8 @@ const Chat = ({ callId }: Props) => {
             <div
               className={`max-w-[75%] rounded-lg p-2 ${
                 item.self
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-800 text-green-500"
+                  ? "bg-blue-100 text-black"
+                  : "bg-gray-200 text-green-700"
               }`}
             >
               <strong className="mr-2 font-[600]">{item.name}</strong>
@@ -79,7 +79,7 @@ const Chat = ({ callId }: Props) => {
       </div>
 
       <form
-        className="fixed bottom-0 w-full bg-gray-900 p-4"
+        className="fixed bottom-0 w-full bg-white p-4 border-t border-gray-300"
         onSubmit={handleSendMessage}
       >
         <input
@@ -88,7 +88,7 @@ const Chat = ({ callId }: Props) => {
           onChange={(e) => setMsg(e.target.value)}
           name="message"
           placeholder="Send a message...."
-          className="w-full rounded-md border-none bg-gray-800 px-4 py-3 text-sm text-white"
+          className="w-full rounded-md border border-gray-300 bg-gray-100 px-4 py-3 text-sm text-black"
         />
       </form>
     </section>

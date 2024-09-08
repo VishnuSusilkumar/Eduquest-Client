@@ -84,8 +84,8 @@ export const MyLiveStreamUI = ({ callid, onExit }: any) => {
   };
 
   return (
-    <div className="flex flex-col gap-[5px] ">
-      <div className="flex rounded-[8px] px-4 py-6 align-baseline text-white">
+    <div className="flex flex-col gap-2 p-4">
+      <div className="flex rounded bg-gray-100 px-4 py-2 text-black">
         Live
       </div>
       <div className="">
@@ -98,7 +98,7 @@ export const MyLiveStreamUI = ({ callid, onExit }: any) => {
           )}
         </div>
       </div>
-      <div className="flex items-center justify-center align-middle">
+      <div className="flex items-center justify-center">
         <button
           className={`${styles.button}`}
           onClick={() => {
@@ -111,7 +111,6 @@ export const MyLiveStreamUI = ({ callid, onExit }: any) => {
                 console.error("Error going live:", error);
               });
             } else {
-              // Emit endStream event
               socketId.emit("endStream", { callid });
               call
                 ?.endCall()
