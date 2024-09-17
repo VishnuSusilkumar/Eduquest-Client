@@ -19,3 +19,12 @@ export enum ProfileSidebar {
   changePassword = 2,
   enrolledCourses = 3,
 }
+
+export enum AdminSidebar {
+  dashboard = 0,
+  users = 1,
+  instructors = 2,
+  courses = 3,
+  faq = 4,
+  categories = 5
+}

@@ -15,6 +15,7 @@ import BasicTable from "../../../utils/BasicTable";
 import CustomActionModal from "@/components/Admin/ViewModal/CustomActionModal";
 import CustomVerifyModal from "@/components/Admin/ViewModal/CustomVerifyModal";
 import ViewModal from "@/components/Admin/ViewModal/ViewModal";
+import { AdminSidebar } from "@/constants/enums";
 
 type Props = {};
 
@@ -211,7 +212,7 @@ const Page = (props: Props) => {
             </div>
           )}
         </div>
-        <Sidebar active={2} />
+        <Sidebar active={AdminSidebar.instructors} />
       </div>
       {openActionModal && (
         <CustomActionModal

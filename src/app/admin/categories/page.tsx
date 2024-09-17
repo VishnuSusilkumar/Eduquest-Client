@@ -4,6 +4,7 @@ import DashboardHero from "../../../components/Instructor/DashboardHero";
 import Heading from "../../../utils/Heading";
 import React from "react";
 import EditCategories from "../../../components/Admin/Customization/EditCategories";
+import { AdminSidebar } from "@/constants/enums";
 
 type Props = {};
 
@@ -21,7 +22,7 @@ const Page = (props: Props) => {
           <DashboardHero />
           <EditCategories />
         </div>
-        <Sidebar active={4} />
+        <Sidebar active={AdminSidebar.categories} />
       </div>
     </div>
     // </AdminProtected>

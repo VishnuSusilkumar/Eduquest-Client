@@ -4,6 +4,7 @@ import DashboardHero from "../../../components/Instructor/DashboardHero";
 import Heading from "../../../utils/Heading";
 import React from "react";
 import EditFAQ from "../../../components/Admin/Customization/EditFAQ";
+import { AdminSidebar } from "@/constants/enums";
 
 type Props = {};
 
@@ -22,7 +23,7 @@ const Page = (props: Props) => {
 
           <EditFAQ />
         </div>
-        <Sidebar active={3} />
+        <Sidebar active={AdminSidebar.faq} />
       </div>
     </div>
     // </AdminProtected>

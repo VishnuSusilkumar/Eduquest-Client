@@ -36,6 +36,19 @@ export const userApi = apiSlice.injectEndpoints({
         credentials: "include" as const,
       }),
     }),
+
+    reportCourse: builder.mutation({
+      query: ({ courseId, courseName, reason }) => ({
+        url: "user/report-course",
+        body: {
+          courseId,
+          courseName,
+          reason,
+        },
+        method: "POST",
+        credentials: "include" as const,
+      }),
+    }),
   }),
 });
 
@@ -43,4 +56,5 @@ export const {
   useUpdateAvatarMutation,
   useEditProfileMutation,
   useUpdatePasswordMutation,
+  useReportCourseMutation,
 } = userApi;

@@ -81,6 +81,27 @@ export const adminApi = apiSlice.injectEndpoints({
         credentials: "include" as const,
       }),
     }),
+    getInstructorCourses: builder.query({
+      query: () => ({
+        url: "admin/get-instructor-courses",
+        method: "GET",
+        credentials: "include" as const,
+      }),
+    }),
+    blockCourse: builder.mutation({
+      query: ({ id }) => ({
+        url: `admin/block-course/${id}`,
+        method: "PATCH",
+        credentials: "include" as const,
+      }),
+    }),
+    unBlockCourse: builder.mutation({
+      query: ({ id }) => ({
+        url: `admin/un-block-course/${id}`,
+        method: "PATCH",
+        credentials: "include" as const,
+      }),
+    }),
   }),
 });
 
@@ -96,4 +117,7 @@ export const {
   useVerifyUserMutation,
   useBlockUserMutation,
   useUnBlockUserMutation,
+  useGetInstructorCoursesQuery,
+  useBlockCourseMutation,
+  useUnBlockCourseMutation,
 } = adminApi;

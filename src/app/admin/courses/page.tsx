@@ -1,108 +1,48 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/Admin/Sidebar/Sidebar";
 import DashboardHero from "../../../components/Instructor/DashboardHero";
 import Heading from "../../../utils/Heading";
-import React, { useEffect, useState } from "react";
 import {
-  useGetUsersQuery,
-  useBlockUserMutation,
-  useUnBlockUserMutation,
+  useGetInstructorCoursesQuery,
+  useBlockCourseMutation,
+  useUnBlockCourseMutation,
 } from "../../../../redux/features/admin/adminApi";
 import { toast } from "sonner";
 import BasicTable from "../../../utils/BasicTable";
 import CustomActionModal from "@/components/Admin/ViewModal/CustomActionModal";
 import { AdminSidebar } from "@/constants/enums";
 
-
 type Props = {};
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
   const [open, setOpen] = useState(false);
-  const [userId, setUserId] = useState("");
+  const [courseId, setCourseId] = useState("");
   const [actionType, setActionType] = useState<"block" | "unblock">("block");
 
-  const { isLoading, data, refetch } = useGetUsersQuery(
+  const { isLoading, data, error, refetch } = useGetInstructorCoursesQuery(
     {},
     { refetchOnMountOrArgChange: true }
   );
   const [
-    blockUser,
+    blockCourse,
     { isLoading: blockLoading, error: blockError, isSuccess: blockSuccess },
-  ] = useBlockUserMutation();
+  ] = useBlockCourseMutation();
   const [
-    unBlockUser,
+    unBlockCourse,
     {
       isLoading: unBlockLoading,
       error: unBlockError,
       isSuccess: unBlockSuccess,
     },
-  ] = useUnBlockUserMutation();
-
-  const columns = [
-    {
-      header: "Name",
-      accessorKey: "name",
-    },
-    {
-      header: "Email",
-      accessorKey: "email",
-    },
-    {
-      header: "Joined At",
-      accessorKey: "createdAt",
-      cell: (info: any) => (
-        <>
-          {info?.row?.original.createdAt
-            ? new Date(info.row.original.createdAt).toLocaleDateString()
-            : ""}
-        </>
-      ),
-    },
-    {
-      header: "Status",
-      accessorKey: "status",
-      cell: (info: any) => (
-        <>{info.row.original.isBlocked ? "Blocked" : "Active"}</>
-      ),
-    },
-    {
-      header: "Action",
-      cell: (info: any) => (
-        <>
-          {info.row.original.isBlocked ? (
-            <button
-              onClick={() => {
-                setUserId(info.row.original._id);
-                setActionType("unblock");
-                setOpen(true);
-              }}
-              className="text-green-600 cursor-pointer"
-            >
-              Unblock
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                setUserId(info.row.original._id);
-                setActionType("block");
-                setOpen(true);
-              }}
-              className="text-red-600 cursor-pointer"
-            >
-              Block
-            </button>
-          )}
-        </>
-      ),
-    },
-  ];
+  ] = useUnBlockCourseMutation();
 
   useEffect(() => {
     if (blockSuccess || unBlockSuccess) {
       toast.success(
         actionType === "block"
-          ? "User blocked successfully"
-          : "User unblocked successfully"
+          ? "Course blocked successfully"
+          : "Course unblocked successfully"
       );
       refetch();
     }
@@ -119,25 +59,85 @@ const page = (props: Props) => {
 
   const handleAction = async () => {
     setOpen(false);
-    const id = userId;
+    const id = courseId;
     try {
       if (actionType === "block") {
-        const result = await blockUser({ id });
-        console.log("Block User Result:", result);
+        await blockCourse({ id });
       } else {
-        const result = await unBlockUser({ id });
-        console.log("Unblock User Result:", result);
+        await unBlockCourse({ id });
       }
     } catch (error) {
       console.error("Action Error:", error);
     }
   };
 
+  const columns = [
+    {
+      header: "Course Name",
+      accessorKey: "name",
+    },
+    {
+      header: "Instructor",
+      accessorKey: "instructorDetails.name",
+      cell: (info: any) => (
+        <>{info?.row?.original?.instructorDetails?.name || "N/A"}</>
+      ),
+    },
+    {
+      header: "Created At",
+      accessorKey: "createdAt",
+      cell: (info: any) => (
+        <>
+          {info?.row?.original?.createdAt
+            ? new Date(info.row.original.createdAt).toLocaleDateString()
+            : ""}
+        </>
+      ),
+    },
+    {
+      header: "Status",
+      accessorKey: "isBlocked",
+      cell: (info: any) => (
+        <>{info.row.original.isBlocked ? "Blocked" : "Active"}</>
+      ),
+    },
+    {
+      header: "Action",
+      cell: (info: any) => (
+        <>
+          {info.row.original.isBlocked ? (
+            <button
+              onClick={() => {
+                setCourseId(info.row.original._id);
+                setActionType("unblock");
+                setOpen(true);
+              }}
+              className="text-green-600 cursor-pointer"
+            >
+              Unblock
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setCourseId(info.row.original._id);
+                setActionType("block");
+                setOpen(true);
+              }}
+              className="text-red-600 cursor-pointer"
+            >
+              Block
+            </button>
+          )}
+        </>
+      ),
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-200">
       <Heading
-        title="Eduquest - Admin - Users"
-        description="Platform for students to learn and get help from teachers"
+        title="Eduquest - Admin - Courses"
+        description="Manage the courses available on the platform"
         keywords="Programming, MERN, Redux"
       />
       <div className="flex mx-auto z-[9999]">
@@ -147,11 +147,11 @@ const page = (props: Props) => {
             <div
               className={`bg-white dark:bg-gray-800 relative shadow-md sm:rounded-sm overflow-hidden mx-28 p-4`}
             >
-              <BasicTable datas={data} columns={columns} type="category" />
+              <BasicTable datas={data} columns={columns} type="course" />
             </div>
           )}
         </div>
-        <Sidebar active={AdminSidebar.users} />
+        <Sidebar active={AdminSidebar.courses} />
       </div>
       {open && (
         <CustomActionModal
@@ -160,14 +160,16 @@ const page = (props: Props) => {
           handleFunction={handleAction}
           text={
             actionType === "block"
-              ? "Are you sure you want to block this user?"
-              : "Are you sure you want to unblock this user?"
+              ? "Are you sure you want to block this course?"
+              : "Are you sure you want to unblock this course?"
           }
-          confirmText={actionType === "block" ? "Block User" : "Unblock User"}
+          confirmText={
+            actionType === "block" ? "Block Course" : "Unblock Course"
+          }
         />
       )}
     </div>
   );
 };
 
-export default page;
+export default Page;
