@@ -125,15 +125,15 @@ export const coursesApi = apiSlice.injectEndpoints({
       }),
     }),
 
-    searchCourse: builder.query({
-      query: ({ keyword, signal }) => ({
+    searchCourse: builder.mutation({
+      query: ({keyword, signal}) => ({
         url: `courses/search-courses`,
-        params: {
-          term: keyword,
+        params:{
+          term: keyword
         },
         method: "GET",
         credentials: "include" as const,
-        signal: signal,
+        signal: signal
       }),
     }),
 
@@ -160,6 +160,6 @@ export const {
   useAddNewQuestionMutation,
   useAddAnswerInQuestionMutation,
   useAddReviewMutation,
-  useSearchCourseQuery,
+  useSearchCourseMutation,
   useGetUserCoursesQuery,
 } = coursesApi;

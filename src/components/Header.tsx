@@ -18,6 +18,7 @@ import { useSocialAuthMutation } from "../../redux/features/auth/authApi";
 import { useLoadUserQuery } from "../../redux/features/api/apiSlice";
 import { toast } from "sonner";
 import Loader from "@/components/ui/Loader/Loader";
+import SearchInput from "./SearchInput";
 
 type Props = {
   open: boolean;
@@ -106,7 +107,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                     />
                   </Link>
                 </div>
-
+                <div className="!z-[10]">{!open && <SearchInput />}</div>
                 <div className="flex items-center">
                   <NavItems
                     activeItem={activeItem}

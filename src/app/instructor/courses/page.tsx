@@ -24,6 +24,7 @@ const CoursesPage = (props: Props) => {
     {},
     { refetchOnMountOrArgChange: true }
   );
+  
   const [deleteCourse, { isLoading: deleteLoading, error, isSuccess }] =
     useDeleteCourseMutation();
 

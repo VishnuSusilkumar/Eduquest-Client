@@ -1,6 +1,7 @@
 "use client";
-
-import DashboardHero from "../../components/Admin/DashboardHero";
+import DashboardWidgets from "../../components/Admin/Widgets/DashboardWidgets";
+import InstructorDashboardWidgets from "@/components/Instructor/InstructorWidgets/InstructorDashboardWidgets";
+import DashboardHero from "../../components/Instructor/DashboardHero";
 import Sidebar from "../../components/Instructor/Sidebar/Sidebar";
 import { EISidebar } from "../../constants/enums";
 import Heading from "../../utils/Heading";
@@ -15,7 +16,7 @@ const Page = (props: Props) => {
     <div className="min-h-screen bg-[#F5F5F5]">
       {/* <InstructorProtected> */}
       <Heading
-        title="Eduquest - Instructor"
+        title="Eduquest - Instructor | Order Analytics"
         description="Platform for students to learn and get help from teachers"
         keywords="Programming, MERN, Redux"
       />
@@ -24,10 +25,13 @@ const Page = (props: Props) => {
           <div className="z-[99]">
             {user && (
               <>
-                <DashboardHero />
+                <DashboardHero instructorId={user._id} />
+                {/* dashboard */}
+                <InstructorDashboardWidgets open={true} />
               </>
             )}
           </div>
+          {/* <OrderAnalytics /> */}
         </div>
         <Sidebar active={EISidebar.dashboard} />
       </div>

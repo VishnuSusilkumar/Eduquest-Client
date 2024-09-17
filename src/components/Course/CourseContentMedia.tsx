@@ -69,7 +69,7 @@ const CourseContentMedia = ({
   );
   const course = courseData;
   const isReviewExists = course?.reviews?.find(
-    (item: any) => item.user._id === user.id
+    (item: any) => item.user._id === user._id
   );
 
   const handleQuestion = async () => {

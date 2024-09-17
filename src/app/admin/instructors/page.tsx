@@ -1,6 +1,6 @@
 "use client";
 import Sidebar from "../../../components/Admin/Sidebar/Sidebar";
-import DashboardHero from "../../../components/Admin/DashboardHero";
+import DashboardHero from "../../../components/Instructor/DashboardHero";
 import Heading from "../../../utils/Heading";
 import React, { useEffect, useState } from "react";
 import {

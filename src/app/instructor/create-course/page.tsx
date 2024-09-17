@@ -3,7 +3,7 @@ import InstructorProtected from "../../../hooks/instructorProtected";
 import React from "react";
 import Heading from "../../../utils/Heading";
 import Sidebar from "../../../components/Instructor/Sidebar/Sidebar";
-import DashboardHero from "../../../components/Admin/DashboardHero";
+import DashboardHero from "../../../components/Instructor/DashboardHero";
 import { useSelector } from "react-redux";
 import dynamic from "next/dynamic";
 
