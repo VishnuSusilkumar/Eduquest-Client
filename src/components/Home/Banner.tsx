@@ -12,27 +12,29 @@ const Banner: React.FC<Props> = ({ setOpen }) => {
   return (
     <div className="relative 800px:-mt-28 z-0 dark:text-black">
       <div className="absolute inset-0 flex flex-col justify-center items-start pl-[12%] gap-0 800px:gap-3">
-        <span className="text-xl md:text-6xl lg:text-6xl xl:text-6xl font-[1000] text-center">
+        <div className="text-xl md:text-6xl lg:text-6xl xl:text-6xl font-[1000] text-center">
           The Best
-        </span>
-        <span className="text-xl md:text-6xl lg:text-6xl xl:text-6xl font-[1000] text-center">
+        </div>
+        <div className="text-xl md:text-6xl lg:text-6xl xl:text-6xl font-[1000] text-center">
           Platform Enroll
-        </span>
-        <span className="text-xl md:text-6xl lg:text-6xl xl:text-6xl text-center ">
+        </div>
+        <div className="text-xl md:text-6xl lg:text-6xl xl:text-6xl text-center">
           in Your Special
-        </span>
-        <span className="relative flex">
-          <span className="bg-[#FDC021] w-16 800px:w-44 h-1 800px:h-3 absolute bottom-0 left-1 z-[1]"></span>
-          <span className="text-xl md:text-6xl lg:text-7xl xl:text-6xl text-center z-[2] ">
+        </div>
+        <div className="relative flex">
+          <div className="bg-[#FDC021] w-16 800px:w-44 h-1 800px:h-3 absolute bottom-0 left-1 z-[1]"></div>
+          <div className="text-xl md:text-6xl lg:text-7xl xl:text-6xl text-center z-[2]">
             Course
-          </span>
-        </span>
-        <span className="text-sm hidden 800px:w-[30%] 800px:block mb-3">
-        EduQuest empowers learners with a wide range of interactive courses, live streams, and real-time chat, creating a seamless e-learning experience for all users.
-        </span>
-        <span onClick={() => setOpen(true)}>
+          </div>
+        </div>
+        <div className="text-sm hidden 800px:w-[30%] 800px:block mb-3">
+          EduQuest empowers learners with a wide range of interactive courses,
+          live streams, and real-time chat, creating a seamless e-learning
+          experience for all users.
+        </div>
+        <div onClick={() => setOpen(true)}>
           {!user && <Badge text="Get Started" arrow />}
-        </span>
+        </div>
       </div>
       <img src="/assets/grow bb.png" className="bg-cover w-full min-h-full" />
     </div>

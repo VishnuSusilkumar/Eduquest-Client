@@ -13,15 +13,14 @@ type Props = {
 
 const Profile: FC<Props> = ({ user }) => {
   const [scroll, setScroll] = useState(false);
-  const [avatar, setAvatar] = useState(null);
+  const [avatar, setAvatar] = useState(user?.avatar || null); // Initialize with user.avatar
   const [active, setActive] = useState(ProfileSidebar.profileInfo);
   const [logoutUser, { isLoading }] = useLogOutMutation();
   const { data: session } = useSession();
-  console.log("Session", session);
 
   const logoutHandler = async () => {
     session && (await signOut());
-    await logoutUser({ succes: true });
+    await logoutUser({ success: true });
   };
 
   if (typeof window !== "undefined") {
@@ -33,24 +32,29 @@ const Profile: FC<Props> = ({ user }) => {
       }
     });
   }
+
   return (
-    <div className="w-[85%] flex mx-auto ">
+    <div className="w-[85%] flex mx-auto">
       <div
-        className={`w-[60px] 800px:w-[310px] h-[450px] dark:bg-gray-800  bg-gray-50 bg-opacity-90 border dark:border-gray-500 rounded-[5px] shadow-sm mt-[80px] mb-[80px] sticky ${
-          scroll ? "top-[120px" : "top-[30px]"
+        className={`w-[60px] 800px:w-[310px] h-[450px] dark:bg-gray-800 bg-gray-50 bg-opacity-90 border dark:border-gray-500 rounded-[5px] shadow-sm mt-[80px] mb-[80px] sticky ${
+          scroll ? "top-[120px]" : "top-[30px]"
         } left-[30px]`}
       >
         <SidebarProfile
           user={user}
           active={active}
-          avatar={avatar}
+          avatar={avatar} // Pass updated avatar
           setActive={setActive}
           logoutHandler={logoutHandler}
         />
       </div>
       {active === ProfileSidebar.profileInfo && (
-        <div className="mt-[80px] h-full w-full bg-transparent  px-8">
-          <ProfileInfo avatar={avatar} user={user} />
+        <div className="mt-[80px] h-full w-full bg-transparent px-8">
+          <ProfileInfo
+            avatar={avatar}
+            user={user}
+            onAvatarUpdate={(newAvatar) => setAvatar(newAvatar)} // Update avatar state
+          />
         </div>
       )}
       {active === ProfileSidebar.changePassword && (

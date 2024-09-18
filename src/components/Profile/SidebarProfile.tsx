@@ -11,7 +11,7 @@ import { toast } from "sonner";
 
 type Props = {
   user: any;
-  avatar: string | null;
+  avatar: string | null; // Ensure correct type
   active: number;
   logoutHandler: any;
   setActive: (active: number) => void;
@@ -31,17 +31,18 @@ const SidebarProfile: FC<Props> = ({
       window.location.href = "/instructor";
     }
   };
+
   return (
     <div className="w-full">
       <div
-        className={`w-full h-16 border-b flex items-center px-3 py-4 cursor-pointer shadow-md hover:bg-blue-gray-50  ${
+        className={`w-full h-16 border-b flex items-center px-3 py-4 cursor-pointer shadow-md hover:bg-blue-gray-50 ${
           active === 1 ? "dark:bg-gray-600 bg-gray-200" : "bg-transparent"
         }`}
         onClick={() => setActive(1)}
       >
         <Image
-          src={user?.avatar || avatar ? user.avatar || avatar : avatarDefault}
-          alt=""
+          src={avatar || avatarDefault}
+          alt="Profile Avatar"
           width={30}
           height={30}
           className="rounded-full cursor-pointer w-[30px] h-[30px] 800px:w-30px"
@@ -52,9 +53,9 @@ const SidebarProfile: FC<Props> = ({
       </div>
 
       <div
-        className={`w-full h-16 border-b flex items-center px-4 py-4 cursor-pointer hover:bg-blue-gray-50  ${
+        className={`w-full h-16 border-b flex items-center px-4 py-4 cursor-pointer hover:bg-blue-gray-50 ${
           active === 2
-            ? "dark:bg-gray-600 border-b shadow-sm bg-gray-200 "
+            ? "dark:bg-gray-600 border-b shadow-sm bg-gray-200"
             : "bg-transparent"
         }`}
         onClick={() => setActive(2)}
@@ -68,13 +69,13 @@ const SidebarProfile: FC<Props> = ({
         <div
           className={`flex h-16 w-full cursor-pointer items-center border-b px-4 py-4 hover:bg-blue-gray-50 ${
             active === 3
-              ? "border-b bg-gray-200 shadow-sm dark:bg-gray-600 "
+              ? "border-b bg-gray-200 shadow-sm dark:bg-gray-600"
               : "bg-transparent"
           }`}
           onClick={() => setActive(3)}
         >
           <SiCoursera size={20} className="dark:text-white text-black" />
-          <h5 className="hidden pl-6 font-Poppins text-sm  font-thin dark:text-white text-black 800px:block">
+          <h5 className="hidden pl-6 font-Poppins text-sm font-thin dark:text-white text-black 800px:block">
             Enrolled Courses
           </h5>
         </div>
@@ -101,18 +102,18 @@ const SidebarProfile: FC<Props> = ({
           onClick={handleInstructorClick}
         >
           <HiAcademicCap size={20} className="dark:text-white text-black " />
-          <h5 className="hidden pl-6 font-Poppins text-sm  font-thin dark:text-white text-black 800px:block">
+          <h5 className="hidden pl-6 font-Poppins text-sm font-thin dark:text-white text-black 800px:block">
             Instructor Dashboard
           </h5>
         </div>
       )}
 
       <div
-        className={`w-full h-16 border-b flex items-center px-4 py-4 cursor-pointer hover:bg-blue-gray-5 bg-transparent hover:bg-blue-gray-50 `}
+        className={`w-full h-16 border-b flex items-center px-4 py-4 cursor-pointer hover:bg-blue-gray-50 bg-transparent`}
         onClick={() => logoutHandler()}
       >
         <AiOutlineLogout size={20} className="dark:text-white text-black" />
-        <h5 className="pl-6 800px:block hidden font-Poppins  dark:text-white  text-black text-sm font-thin">
+        <h5 className="pl-6 800px:block hidden font-Poppins dark:text-white text-black text-sm font-thin">
           Logout
         </h5>
       </div>

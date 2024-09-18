@@ -13,11 +13,12 @@ import { toast } from "sonner";
 type Props = {
   avatar: any;
   user: any;
+  onAvatarUpdate: (avatar: string) => void;
 };
 
-const ProfileInfo: FC<Props> = ({ avatar, user }) => {
-  const [name, setName] = useState(user && user.name);
-  const [initialName, setInitialName] = useState(user && user.name);
+const ProfileInfo: FC<Props> = ({ avatar, user, onAvatarUpdate }) => {
+  const [name, setName] = useState(user?.name || "");
+  const [initialName, setInitialName] = useState(user?.name || "");
   const imageRef = useRef<HTMLInputElement>(null);
   const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
   const [editprofile, { isSuccess: profileSuccess, error: profileError }] =
@@ -25,8 +26,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   const [userAvatar, setUserAvatar] = useState(
     user?.avatar || avatar || avatarIcon
   );
-  const [loadUser, setLoadUser] = useState(false);
-  const {} = useLoadUserQuery(undefined, { skip: loadUser ? false : true });
+  const { refetch } = useLoadUserQuery(undefined, {});
 
   const handleImageClick = () => {
     imageRef.current?.click();
@@ -37,25 +37,24 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
     formData.append("avatar", e.target.files[0]);
     const response = await updateAvatar(formData);
 
-    if (response?.data) {
+    if (response?.data?.avatar) {
       setUserAvatar(response.data.avatar);
-      toast.success("Avatar updated successfully");
-    } else if (error) {
+      onAvatarUpdate(response.data.avatar);
+      toast.success(response.data.message);
+      refetch();
+    } else {
       toast.error("Failed to update avatar");
     }
   };
 
   useEffect(() => {
-    if (isSuccess || profileSuccess) {
-      setLoadUser(true);
-    }
     if (profileSuccess) {
       toast.success("Profile updated Successfully");
     }
     if (error || profileError) {
       console.log(error);
     }
-  }, [isSuccess, error, profileError, profileSuccess]);
+  }, [error, profileError, profileSuccess]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
