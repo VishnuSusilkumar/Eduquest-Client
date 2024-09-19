@@ -13,6 +13,7 @@ import {
   useAddAnswerInQuestionMutation,
   useAddNewQuestionMutation,
   useAddReviewMutation,
+  useEditReviewMutation,
   useGetCourseDetailsQuery,
 } from "../../../redux/features/courses/coursesApi";
 import { formatDate } from "../../utils/FormatDate";
@@ -45,6 +46,11 @@ const CourseContentMedia = ({
   const [review, setReview] = useState("");
   const [answer, setAnswer] = useState("");
   const [questionId, setQuestionId] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editReviewData, setEditReviewData] = useState({
+    rating: 1,
+    comment: "",
+  });
   const [addQuestion, { isSuccess, error, isLoading: addQuestionLoading }] =
     useAddNewQuestionMutation();
   const [
@@ -67,6 +73,16 @@ const CourseContentMedia = ({
     id,
     { refetchOnMountOrArgChange: true }
   );
+
+  const [
+    editReview,
+    {
+      isSuccess: editReviewSuccess,
+      error: editReviewError,
+      isLoading: editReviewLoading,
+    },
+  ] = useEditReviewMutation();
+
   const course = courseData;
   const isReviewExists = course?.reviews?.find(
     (item: any) => item.user._id === user._id
@@ -132,6 +148,35 @@ const CourseContentMedia = ({
     }
   };
 
+  const handleEditReview = (review: { rating: any; comment: any }) => {
+    setIsEditing(true);
+    setEditReviewData({
+      rating: review.rating,
+      comment: review.comment,
+    });
+  };
+
+  const handleEditReviewSubmit = () => {
+    if (editReviewData.comment.length === 0) {
+      toast.error("Review can't be empty");
+    } else {
+      const editedReview = {
+        ...editReviewData,
+        user: {
+          name: user.name,
+          avatar: user.avatar,
+          role: user.role,
+        },
+      };
+
+      editReview({
+        reviewId: isReviewExists._id,
+        updatedReview: editedReview,
+        courseId: id,
+      });
+    }
+  };
+
   useEffect(() => {
     if (isSuccess) {
       setQuestion("");
@@ -153,6 +198,12 @@ const CourseContentMedia = ({
       courseRefetch();
       toast.success("Review added successfully");
       setReview("");
+    }
+
+    if (editReviewSuccess) {
+      courseRefetch();
+      toast.success("Review edited successfully");
+      setIsEditing(false);
     }
 
     if (error) {
@@ -180,13 +231,23 @@ const CourseContentMedia = ({
         // toast.error(errorMessage.data.message);
       }
     }
+
+    if (editReviewError) {
+      if ("data" in editReviewError) {
+        const errorMessage = editReviewError as any;
+        console.log(errorMessage);
+        // toast.error(errorMessage.data.message);
+      }
+    }
   }, [
     isSuccess,
     answerSuccess,
     reviewSuccess,
+    editReviewSuccess,
     error,
     answerError,
     reviewError,
+    editReviewError,
   ]);
 
   return (
@@ -385,36 +446,119 @@ const CourseContentMedia = ({
             <br />
             <div className="h-[1px] w-full bg-[#ffffff3b]"></div>
             <div className="w-full">
-              {(course?.reviews && [...course.reviews].reverse()).map(
-                (item: any, index: number) => (
-                  <div className="my-5 flex  w-full  " key={index}>
-                    <Image
-                      src={
-                        item?.user?.avatar
-                          ? item.user.avatar
-                          : "/assets/user.png"
-                      }
-                      alt="usericon"
-                      width={30}
-                      height={30}
-                      className="ml-5 h-[30px] w-[30px] rounded-full"
-                    />
-                    <div className="pl-3 ">
-                      <div className="flex gap-1">
-                        <h5 className="font-sans text-xs ">
-                          {item?.user.name}
-                        </h5>{" "}
-                        <small className="text-xs text-gray-600">
-                          {item.createdAt && formatDate(item?.createdAt)}
-                        </small>
-                      </div>
-                      <Ratings rating={item.rating} />
-                      <p className="text-sm">{item?.comment}</p>
+              {course?.reviews?.map((item: any, index: number) => (
+                <div className="my-5 flex w-full" key={index}>
+                  <Image
+                    src={
+                      item?.user?.avatar ? item.user.avatar : "/assets/user.png"
+                    }
+                    alt="usericon"
+                    width={30}
+                    height={30}
+                    className="ml-5 h-[30px] w-[30px] rounded-full"
+                  />
+                  <div className="pl-3">
+                    <div className="flex gap-1">
+                      <h5 className="font-sans text-xs">{item?.user.name}</h5>
+                      <small className="text-xs text-gray-600">
+                        {item.createdAt && formatDate(item?.createdAt)}
+                      </small>
                     </div>
+                    <Ratings rating={item.rating} />
+                    <p className="text-sm">{item?.comment}</p>
+
+                    {/* Edit Button for Review Owner */}
+                    {item.user._id === user?._id && (
+                      <div className="flex gap-2">
+                        <button
+                          className="text-xs text-blue-500"
+                          onClick={() => handleEditReview(item)}
+                        >
+                          Edit
+                        </button>
+                      </div>
+                    )}
                   </div>
-                )
-              )}
+                </div>
+              ))}
             </div>
+
+            {isEditing && (
+              <div className="w-full">
+                <div className="flex w-full">
+                  <Image
+                    src={user?.avatar ? user.avatar : "/assets/user.png"}
+                    alt="usericon"
+                    width={30}
+                    height={30}
+                    className="ml-5 h-[30px] w-[30px] rounded-full"
+                  />
+                  <div className="w-full">
+                    <h5 className="pl-3 text-sm font-[500]">
+                      Edit Rating <span className="text-red-500">*</span>
+                    </h5>
+                    <div className="ml-2 flex w-full pb-3">
+                      {[1, 2, 3, 4, 5].map((i) =>
+                        editReviewData.rating >= i ? (
+                          <AiFillStar
+                            key={i}
+                            className="mr-1 cursor-pointer"
+                            color="rgb(246,186,0)"
+                            size={25}
+                            onClick={() =>
+                              setEditReviewData({
+                                ...editReviewData,
+                                rating: i,
+                              })
+                            }
+                          />
+                        ) : (
+                          <AiOutlineStar
+                            key={i}
+                            className="mr-1 cursor-pointer"
+                            color="rgb(246,186,0)"
+                            size={25}
+                            onClick={() =>
+                              setEditReviewData({
+                                ...editReviewData,
+                                rating: i,
+                              })
+                            }
+                          />
+                        )
+                      )}
+                    </div>
+                    <textarea
+                      value={editReviewData.comment}
+                      onChange={(e) =>
+                        setEditReviewData({
+                          ...editReviewData,
+                          comment: e.target.value,
+                        })
+                      }
+                      cols={40}
+                      rows={5}
+                      placeholder="Edit your comment.."
+                      className="w-[90%] rounded border !border-black bg-transparent p-2 font-Poppins outline-none 800px:w-full 800px:text-sm"
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="flex w-full justify-end">
+                  <div
+                    className={`${
+                      styles.button
+                    } mt-1 !h-[30px] !w-[100px] items-center !text-xs font-thin text-white ${
+                      editReviewLoading && "cursor-no-drop"
+                    }`}
+                    onClick={
+                      editReviewLoading ? () => {} : handleEditReviewSubmit
+                    }
+                  >
+                    Submit
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

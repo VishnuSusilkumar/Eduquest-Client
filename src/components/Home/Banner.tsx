@@ -1,6 +1,6 @@
 "use client";
 import { Badge } from "../Badge";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 type Props = {
@@ -9,6 +9,12 @@ type Props = {
 
 const Banner: React.FC<Props> = ({ setOpen }) => {
   const { user } = useSelector((state: any) => state.auth);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <div className="relative 800px:-mt-28 z-0 dark:text-black">
       <div className="absolute inset-0 flex flex-col justify-center items-start pl-[12%] gap-0 800px:gap-3">
@@ -32,9 +38,11 @@ const Banner: React.FC<Props> = ({ setOpen }) => {
           live streams, and real-time chat, creating a seamless e-learning
           experience for all users.
         </div>
-        <div onClick={() => setOpen(true)}>
-          {!user && <Badge text="Get Started" arrow />}
-        </div>
+        {isClient && (
+          <div onClick={() => setOpen(true)}>
+            {!user && <Badge text="Get Started" arrow />}
+          </div>
+        )}
       </div>
       <img src="/assets/grow bb.png" className="bg-cover w-full min-h-full" />
     </div>

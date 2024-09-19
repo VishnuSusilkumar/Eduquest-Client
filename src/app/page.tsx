@@ -18,7 +18,7 @@ const Page: FC<Props> = (props) => {
     const hash = window.location.hash;
 
     if (hash === "#aboutus") {
-      const aboutUsSection = document.getElementById("aboutus-section");
+      const aboutUsSection = document.getElementById("aboutus");
       if (aboutUsSection) {
         aboutUsSection.scrollIntoView({ behavior: "smooth" });
       }
@@ -42,7 +42,7 @@ const Page: FC<Props> = (props) => {
       <Banner setOpen={setOpen} />
 
       <Categories />
-      <div id="aboutus-section">
+      <div id="aboutus">
         <AboutUs />
       </div>
       <FAQ />

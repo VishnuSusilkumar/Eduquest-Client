@@ -125,6 +125,18 @@ export const coursesApi = apiSlice.injectEndpoints({
       }),
     }),
 
+    editReview: builder.mutation({
+      query: ({ reviewId, updatedReview, courseId }) => ({
+        url: `courses/edit-review/${reviewId}`,
+        body: {
+          updatedReview,
+          courseId,
+        },
+        method: "PUT",
+        credentials: "include" as const,
+      }),
+    }),
+
     searchCourse: builder.mutation({
       query: ({keyword, signal}) => ({
         url: `courses/search-courses`,
@@ -160,6 +172,7 @@ export const {
   useAddNewQuestionMutation,
   useAddAnswerInQuestionMutation,
   useAddReviewMutation,
+  useEditReviewMutation,
   useSearchCourseMutation,
   useGetUserCoursesQuery,
 } = coursesApi;
