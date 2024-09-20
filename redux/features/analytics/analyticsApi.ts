@@ -33,6 +33,22 @@ export const analyticsApi = apiSlice.injectEndpoints({
         credentials: "include" as const,
       }),
     }),
+
+    getRevenueAnalytics: builder.query({
+      query: (id) => ({
+        url: `order/revenue-analytics/${id}`,
+        method: "GET",
+        credentials: "include" as const,
+      }),
+    }),
+
+    getInstructorRevenueAnalytics: builder.query({
+      query: (id) => ({
+        url: `order/instructor-revenue-analytics/${id}`,
+        method: "GET",
+        credentials: "include" as const,
+      }),
+    }),
   }),
 });
 
@@ -41,4 +57,6 @@ export const {
   useGetUsersAnalyticsQuery,
   useGetOrdersAnalyticsQuery,
   useGetInstructorCoursesAndUserCountQuery,
+  useGetRevenueAnalyticsQuery,
+  useGetInstructorRevenueAnalyticsQuery,
 } = analyticsApi;

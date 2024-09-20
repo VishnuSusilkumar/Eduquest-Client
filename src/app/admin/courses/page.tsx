@@ -12,10 +12,12 @@ import { toast } from "sonner";
 import BasicTable from "../../../utils/BasicTable";
 import CustomActionModal from "@/components/Admin/ViewModal/CustomActionModal";
 import { AdminSidebar } from "@/constants/enums";
+import { useSelector } from "react-redux";
 
 type Props = {};
 
 const Page = (props: Props) => {
+  const { user } = useSelector((state: any) => state.auth);
   const [open, setOpen] = useState(false);
   const [courseId, setCourseId] = useState("");
   const [actionType, setActionType] = useState<"block" | "unblock">("block");
@@ -142,7 +144,7 @@ const Page = (props: Props) => {
       />
       <div className="flex mx-auto z-[9999]">
         <div className="mx-auto pl-14 mt-20 w-[85%]">
-          <DashboardHero />
+          <DashboardHero instructorId={user._id} />
           {data && (
             <div
               className={`bg-white dark:bg-gray-800 relative shadow-md sm:rounded-sm overflow-hidden mx-28 p-4`}

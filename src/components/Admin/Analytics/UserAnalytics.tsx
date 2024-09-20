@@ -14,7 +14,7 @@ import Link from "next/link";
 
 type Props = {
   isDashboard?: boolean;
-  onUserCountChange?: (count: number) => void; 
+  onUserCountChange?: (count: number) => void;
 };
 
 const UserAnalytics = ({ isDashboard, onUserCountChange }: Props) => {
@@ -44,15 +44,13 @@ const UserAnalytics = ({ isDashboard, onUserCountChange }: Props) => {
           }`}
         >
           <div className={`${isDashboard && "!ml-8 mb-5"}`}>
-            <Link
-              href={"/instructor/user-analytics"}
-              style={{ color: "black" }}
+            <div
               className={`${styles.title} ${
                 isDashboard && "text-sm  px-5 !text-start"
               }`}
             >
               User Analytics
-            </Link>
+            </div>
           </div>
           <div
             className={`w-full ${

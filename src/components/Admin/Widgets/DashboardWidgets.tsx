@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import OrderAnalytics from "../Analytics/OrderAnalytics";
 import CourseAnalytics from "../Analytics/CourseAnalytics";
+import RevenuePerOrder from "../Analytics/RevenueAnalytics";
 
 type Props = {
   open: boolean;
@@ -16,15 +17,17 @@ const DashboardWidgets = (props: Props) => {
   const [totalUsers, setTotalUsers] = useState<number>(0);
   const [totalOrders, setTotalOrders] = useState<number>(0);
   const [totalCourses, setTotalCourses] = useState<number>(0);
+  const [totalRevenue, setTotalRevenue] = useState<number>(0);
 
   return (
     <div>
       <div className="grid-cols-2 flex justify-between">
         <div className="w-[70%]">
+
           <UserAnalytics isDashboard={true} onUserCountChange={setTotalUsers} />
         </div>
-        <div className="justify-center items-center flex ">
-          <div className="">
+        <div className="justify-center items-center flex">
+          <div>
             {/* Users Widget */}
             <div className="bg-white relative flex-col flex border border-t-[#4d62d9] border-t-[3px] shadow-sm antialiased h-32 p-3 mt-5 w-[15rem] rounded-sm">
               <span className="font-bold text-2xl tracking-widest pb-2 text-black">
@@ -73,6 +76,15 @@ const DashboardWidgets = (props: Props) => {
             onCourseCountChange={setTotalCourses}
           />
         </div>
+      </div>
+
+      <br />
+
+      <div className="w-full">
+        <RevenuePerOrder
+          isDashboard={true}
+          onRevenueCountChange={setTotalRevenue}
+        />
       </div>
     </div>
   );

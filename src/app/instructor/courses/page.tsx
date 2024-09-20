@@ -12,10 +12,13 @@ import {
 import CustomDeleteModal from "@/components/ui/CustomDeleteModal";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import DashboardHero from "@/components/Instructor/DashboardHero";
 
 type Props = {};
 
 const CoursesPage = (props: Props) => {
+  const { user } = useSelector((state: any) => state.auth);
   const [open, setOpen] = useState(false);
   const [courseId, setCourseId] = useState("");
   const router = useRouter();
@@ -24,7 +27,7 @@ const CoursesPage = (props: Props) => {
     {},
     { refetchOnMountOrArgChange: true }
   );
-  
+
   const [deleteCourse, { isLoading: deleteLoading, error, isSuccess }] =
     useDeleteCourseMutation();
 
@@ -111,6 +114,9 @@ const CoursesPage = (props: Props) => {
       />
       <div className="flex mx-auto z-[9999]">
         <div className="mx-auto pl-14 mt-20 w-[85%]">
+          <div className="z-[99] mb-10">
+            {user && <DashboardHero instructorId={user._id} />}
+          </div>
           {data && (
             <div
               className={`bg-white dark:bg-gray-800 relative shadow-md sm:rounded-sm overflow-hidden mx-28 p-4`}

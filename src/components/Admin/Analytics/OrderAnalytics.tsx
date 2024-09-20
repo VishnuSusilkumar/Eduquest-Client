@@ -46,15 +46,13 @@ const OrderAnalytics = ({ isDashboard, onOrderCountChange }: Props) => {
               isDashboard ? "mt-[50px] pl-[40px] mb-2" : "mt-[50px]"
             }`}
           >
-            <Link
-              href={"/instructor/order-analytics"}
-              style={{ color: "black" }}
+            <div
               className={`${styles.title} ${
                 isDashboard && "text-sm  px-5 !text-start"
               }`}
             >
               Order Analytics
-            </Link>
+            </div>
           </div>
           <div
             className={`w-full ${

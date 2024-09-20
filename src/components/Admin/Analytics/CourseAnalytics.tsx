@@ -44,15 +44,13 @@ const CourseAnalytics = ({ isDashboard, onCourseCountChange }: Props) => {
           }`}
         >
           <div className={`${isDashboard && "!ml-8 mb-5"}`}>
-            <Link
-              href={"/instructor/course-analytics"}
-              style={{ color: "black" }}
+            <div
               className={`${styles.title} ${
                 isDashboard && "text-sm  px-5 !text-start"
               }`}
             >
               Course Analytics
-            </Link>
+            </div>
           </div>
           <div
             className={`w-full ${

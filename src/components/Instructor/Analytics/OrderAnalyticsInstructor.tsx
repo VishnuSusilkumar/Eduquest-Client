@@ -67,15 +67,14 @@ const OrderAnalyticsInstructor = ({
           }`}
         >
           <div className={`${isDashboard && "!ml-8 mb-5"}`}>
-            <Link
-              href={"/instructor/order-course-analytics"}
+            <div
               style={{ color: "black" }}
               className={`${styles.title} ${
                 isDashboard && "text-sm px-5 !text-start "
               }`}
             >
               Order Analytics
-            </Link>
+            </div>
           </div>
           <div
             className={`w-full ${

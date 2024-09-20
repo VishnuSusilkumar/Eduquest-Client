@@ -27,7 +27,7 @@ const Page = (props: Props) => {
               <>
                 <DashboardHero instructorId={user._id} />
                 {/* dashboard */}
-                <InstructorDashboardWidgets open={true} />
+                <InstructorDashboardWidgets open={true} instructorId={user._id}/>
               </>
             )}
           </div>

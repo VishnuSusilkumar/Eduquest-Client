@@ -27,7 +27,9 @@ const CreateCoursePage = (props: Props) => {
       />
       <div className="z-[9999] mx-auto flex">
         <div className="mx-auto ml-10 mr-0 pl-10 800px:mr-16  800px:w-[80%] 800px:px-[100px]">
-          <div className="z-[99] mb-10">{user && <DashboardHero />}</div>
+          <div className="z-[99] mb-10">
+            {user && <DashboardHero instructorId={user._id} />}
+          </div>
           <CreateCourse />
         </div>
         <Sidebar active={0} />

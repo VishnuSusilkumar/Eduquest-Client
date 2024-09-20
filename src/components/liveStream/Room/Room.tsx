@@ -4,11 +4,12 @@ import Stream from "../Stream/Stream";
 import Chat from "../Chat/Chat";
 import Participants from "../Participants/Participants"; 
 import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 
 type Props = {};
 
 const Room = (props: Props) => {
-  const callid = "pY4Bk55RLUhh";  
+  const callid = uuidv4().substr(0, 6);
   const router = useRouter();
 
   const handleExit = () => {
