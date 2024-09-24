@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { socketId } from "./socket";
 import { SignalIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import { useStream } from "./StreamContext";
 
 export const navItemsData = [
   {
@@ -30,7 +31,8 @@ type Props = {
 };
 
 const NavItems: React.FC<Props> = ({ activeItem, isMobile, user }) => {
-  const [streamId, setStreamId] = useState<string | null>(null);
+  const { state, dispatch } = useStream();
+  const { streamId } = state;
   const router = useRouter();
 
   const handleNotification = (data: any) => {
@@ -41,23 +43,20 @@ const NavItems: React.FC<Props> = ({ activeItem, isMobile, user }) => {
     );
 
     if (isAnyCourseIdMatching) {
-      setStreamId(data.streamId);
-      localStorage.setItem("activeStreamId", data.streamId);
+      dispatch({ type: "SET_STREAM_ID", payload: data.streamId });
     }
   };
 
   const handleStreamEnd = (data: any) => {
     if (data.streamId === streamId) {
-      setStreamId(null);
-      localStorage.removeItem("activeStreamId");
+      console.log('Stream End Triggered: ', data.streamId); // Debugging log
+      dispatch({ type: "END_STREAM" });
+      console.log('Dispatching END_STREAM, streamId should now be null'); // Debugging log
+      window.location.reload(); // Perform a full page reload
     }
   };
 
   useEffect(() => {
-    const savedStreamId = localStorage.getItem("activeStreamId");
-    if (savedStreamId) {
-      setStreamId(savedStreamId);
-    }
 
     socketId.on("joinStream", handleNotification);
     socketId.on("streamEnded", handleStreamEnd);

@@ -13,22 +13,30 @@ const Chat = ({ callId }: Props) => {
   const { user } = useSelector((state: any) => state.auth);
   const [msg, setMsg] = useState("");
 
+  const getCurrentTime = () => {
+    const date = new Date();
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
+
   const handleSendMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (msg.length) {
+      const timestamp = getCurrentTime();
       socketId.emit("sendMessage", {
         callId,
-        content: { name: user.name, message: msg },
+        content: { name: user.name, message: msg, time: timestamp },
       });
       setChats((prev: any) => [
         ...prev,
-        { name: user.name, message: msg, self: true },
+        { name: user.name, message: msg, time: timestamp, self: true },
       ]);
     }
     setMsg("");
   };
 
   const handleReceiveMessage = (data: any) => {
+    console.log("Received", data);
+
     if (data.callId === callId && data.content.name !== user.name) {
       setChats((prev: any) => [...prev, { ...data.content, self: false }]);
     }
@@ -72,7 +80,8 @@ const Chat = ({ callId }: Props) => {
               }`}
             >
               <strong className="mr-2 font-[600]">{item.name}</strong>
-              <p className="m-0"> {item.message}</p>
+              <p className="m-0">{item.message}</p>
+              <span className="text-xs text-gray-500">{item.time}</span>
             </div>
           </div>
         ))}

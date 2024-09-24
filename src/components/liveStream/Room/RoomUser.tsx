@@ -7,6 +7,7 @@ import { socketId } from "../../../utils/socket";
 import { useRouter } from "next/navigation";
 import { FaPhoneSlash } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { useStream } from "@/utils/StreamContext"; 
 
 type Props = {
   streamId: string;
@@ -15,10 +16,11 @@ type Props = {
 const RoomUser = ({ streamId }: Props) => {
   const router = useRouter();
   const { user } = useSelector((state: any) => state.auth);
+  const { dispatch } = useStream();
 
   useEffect(() => {
     const handleStreamEnd = () => {
-      localStorage.removeItem("activeStreamId");
+      dispatch({ type: "END_STREAM" });
       router.push("/");
     };
 

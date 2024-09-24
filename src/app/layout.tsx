@@ -9,6 +9,7 @@ import { SessionProvider } from "next-auth/react";
 import { useLoadUserQuery } from "../../redux/features/api/apiSlice";
 import { FC, useEffect } from "react";
 import { socketId } from "@/utils/socket";
+import { StreamProvider } from "@/utils/StreamContext";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -34,12 +35,14 @@ export default function RootLayout({
       >
         <Providers>
           <SessionProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <SocketProvider>
+            {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem> */}
+            <SocketProvider>
+              <StreamProvider>
                 {children}
                 <Toaster position="top-center" />
-              </SocketProvider>
-            </ThemeProvider>
+              </StreamProvider>
+            </SocketProvider>
+            {/* </ThemeProvider> */}
           </SessionProvider>
         </Providers>
       </body>

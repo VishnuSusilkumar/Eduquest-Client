@@ -15,6 +15,7 @@ type Props = {};
 
 const UploadMedia = (props: Props) => {
   const [data, setData] = useState([]);
+  const [isPolling, setIsPolling] = useState(false);
   const [editData, setEditData] = useState({
     id: "",
     videoUrl: "",
@@ -112,11 +113,18 @@ const UploadMedia = (props: Props) => {
     try {
       const response = await axios.get(
         `http://localhost:8001/api/transcode/getData`,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       setData(response.data);
+      console.log("Response data", response.data);
+      const allUploaded = response.data.every(
+        (item: { status: string }) => item.status === "Uploaded"
+      );
+      if (!allUploaded) {
+        setIsPolling(true);
+      } else {
+        setIsPolling(false);
+      }
     } catch (e: any) {
       console.log(e);
     }
@@ -124,7 +132,16 @@ const UploadMedia = (props: Props) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+    let interval: NodeJS.Timeout;
+
+    if (isPolling) {
+      interval = setInterval(fetchData, 20000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isPolling]);
+
   return (
     <div className="min-h-screen bg-[#F5F5F5]">
       {/* <InstructorProtected> */}

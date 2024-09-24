@@ -23,7 +23,7 @@ const Participants = ({ callId }: Props) => {
   }, [callId]);
 
   return (
-    <section className="flex flex-col h-full w-1/5 max-w-xs overflow-y-auto bg-white p-4 ml-12">
+    <section className="flex flex-col h-full w-1/5 max-w-xs overflow-y-auto bg-white p-4">
       <div className="flex w-full items-center justify-between bg-gray-100 px-4 py-2 text-base text-black">
         <p>Participants</p>
         <strong className="rounded bg-gray-200 px-4 py-1 text-sm font-semibold text-black">

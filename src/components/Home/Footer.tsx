@@ -23,7 +23,7 @@ const currentYear = new Date().getFullYear();
 
 export function Footer() {
   return (
-    <footer className="relative w-full mt-20 dark:text-white text-xs">
+    <footer className="relative w-full mt-20 text-xs">
       <div className="mx-auto w-full max-w-7xl px-8">
         <div className="mx-auto grid w-full grid-cols-1 gap-8 py-12 md:grid-cols-2 lg:grid-cols-4 text-xs">
           {SITEMAP.map(({ title, links }, key) => (
@@ -31,14 +31,14 @@ export function Footer() {
               <Typography
                 variant="small"
                 color="blue-gray"
-                className="mb-4 font-bold uppercase opacity-50 dark:text-white "
+                className="mb-4 font-bold uppercase opacity-50"
                 placeholder={""}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
               >
                 {title}
               </Typography>
-              <ul className="space-y-1 dark:text-white text-xs">
+              <ul className="space-y-1 text-xs">
                 {links.map((link, key) => (
                   <Typography
                     key={key}
@@ -51,7 +51,7 @@ export function Footer() {
                   >
                     <a
                       href="#"
-                      className="inline-block py-1 pr-2 transition-transform hover:scale-105 dark:text-white"
+                      className="inline-block py-1 pr-2 transition-transform hover:scale-105"
                     >
                       {link}
                     </a>
@@ -61,10 +61,10 @@ export function Footer() {
             </div>
           ))}
         </div>
-        <div className="flex dark:text-white w-full flex-col items-center justify-center border-t border-blue-gray-50 py-4 md:flex-row md:justify-between">
+        <div className="flex w-full flex-col items-center justify-center border-t border-blue-gray-50 py-4 md:flex-row md:justify-between">
           <Typography
             variant="small"
-            className="mb-4 text-center font-normal text-blue-gray-900 md:mb-0 dark:text-white text-sm"
+            className="mb-4 text-center font-normal text-blue-gray-900 md:mb-0 text-sm"
             placeholder={""}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
@@ -77,7 +77,7 @@ export function Footer() {
             <Typography
               as="a"
               href="#"
-              className="opacity-80 transition-opacity hover:opacity-100 dark:text-white"
+              className="opacity-80 transition-opacity hover:opacity-100"
               placeholder={""}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
@@ -98,7 +98,7 @@ export function Footer() {
             <Typography
               as="a"
               href="#"
-              className="opacity-80 transition-opacity hover:opacity-100 dark:text-white"
+              className="opacity-80 transition-opacity hover:opacity-100"
               placeholder={""}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
@@ -119,7 +119,7 @@ export function Footer() {
             <Typography
               as="a"
               href="#"
-              className="opacity-80 transition-opacity hover:opacity-100 dark:text-white"
+              className="opacity-80 transition-opacity hover:opacity-100"
               placeholder={""}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
@@ -136,7 +136,7 @@ export function Footer() {
             <Typography
               as="a"
               href="#"
-              className="opacity-80 transition-opacity hover:opacity-100 dark:text-white"
+              className="opacity-80 transition-opacity hover:opacity-100"
               placeholder={""}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
@@ -157,7 +157,7 @@ export function Footer() {
             <Typography
               as="a"
               href="#"
-              className="opacity-80 transition-opacity hover:opacity-100 dark:text-white"
+              className="opacity-80 transition-opacity hover:opacity-100"
               placeholder={""}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}

@@ -16,7 +16,6 @@ const Page = (props: Props) => {
         keywords="Programming, MERN, Redux"
       />
       <div className="z-[9999] mx-auto flex">
-        <Sidebar active={EISidebar.live} />
 
         <div className="w-full px-4">
           <Room />

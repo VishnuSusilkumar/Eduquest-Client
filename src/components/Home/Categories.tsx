@@ -6,7 +6,7 @@ type Props = {};
 const Categories = (props: Props) => {
   return (
     <div
-      className=" w-full flex flex-col pb-12 800px:pb-36 text-black"
+      className="bg-cover w-full flex flex-col pb-12 800px:pb-36 text-black"
       style={{ backgroundImage: "url(/assets/category.png)" }}
     >
       <div className="items-center justify-center flex flex-col 800px:py-20 py-6 gap-2">
