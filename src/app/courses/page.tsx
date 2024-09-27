@@ -1,9 +1,7 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import {
-  useGetAllCoursesQuery,
-} from "../../../redux/features/courses/coursesApi";
+import React, { useEffect, useState, Suspense } from "react";
+import { useGetAllCoursesQuery } from "../../../redux/features/courses/coursesApi";
 import Loader from "../../components/ui/Loader/Loader";
 import Header from "../../components/Header";
 import Heading from "../../utils/Heading";
@@ -11,7 +9,7 @@ import { styles } from "../../styles/style";
 import { CourseCard } from "../../components/ui/Carousel/Carousel";
 import CategoryCarousel from "../../components/ui/Carousel/CategoryCarousel";
 
-const Page = () => {
+const PageContent = () => {
   const searchParams = useSearchParams();
   const search = searchParams?.get("title");
   const { data, isLoading } = useGetAllCoursesQuery(undefined, {});
@@ -30,8 +28,8 @@ const Page = () => {
     if (search) {
       setCourses(
         data?.filter((item: any) =>
-          item.name.toLowerCase().includes(search.toLowerCase()),
-        ),
+          item.name.toLowerCase().includes(search.toLowerCase())
+        )
       );
     }
   }, [data, category, search]);
@@ -80,6 +78,14 @@ const Page = () => {
         </>
       )}
     </div>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense>
+      <PageContent />
+    </Suspense>
   );
 };
 
