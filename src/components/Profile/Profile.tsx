@@ -19,8 +19,9 @@ const Profile: FC<Props> = ({ user }) => {
   const { data: session } = useSession();
 
   const logoutHandler = async () => {
-    session && (await signOut());
+    await signOut({ redirect: false }); 
     await logoutUser({ success: true });
+    window.location.reload();
   };
 
   if (typeof window !== "undefined") {
