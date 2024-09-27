@@ -11,9 +11,7 @@ import { styles } from "../../styles/style";
 import { CourseCard } from "../../components/ui/Carousel/Carousel";
 import CategoryCarousel from "../../components/ui/Carousel/CategoryCarousel";
 
-type Props = {};
-
-const Page = (props: Props) => {
+const Page = () => {
   const searchParams = useSearchParams();
   const search = searchParams?.get("title");
   const { data, isLoading } = useGetAllCoursesQuery(undefined, {});

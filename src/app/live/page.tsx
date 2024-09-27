@@ -5,9 +5,8 @@ import React, { useState } from "react";
 import Heading from "../../utils/Heading";
 import Header from "../../components/Header";
 
-type Props = {};
 
-const Page = (props: Props) => {
+const Page = () => {
   const searchParams = useSearchParams();
   const [route, setRoute] = useState("Login");
   const [open, setOpen] = useState(false);
