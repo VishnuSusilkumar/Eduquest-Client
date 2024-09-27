@@ -9,7 +9,7 @@ import Loader from "@/components/ui/Loader/Loader";
 
 type Props = {};
 
-const page: FC<Props> = (props) => {
+const Page: FC<Props> = (props) => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(5);
   const [route, setRoute] = useState("Login");
@@ -48,4 +48,4 @@ const page: FC<Props> = (props) => {
   );
 };
 
-export default page;
+export default Page;

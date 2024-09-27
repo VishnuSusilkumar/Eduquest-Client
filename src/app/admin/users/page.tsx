@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
   const { user } = useSelector((state: any) => state.auth);
   const [open, setOpen] = useState(false);
   const [userId, setUserId] = useState("");
@@ -171,4 +171,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;
