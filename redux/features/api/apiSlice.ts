@@ -4,7 +4,7 @@ import { userLoggedIn, userLoggedOut } from "../auth/authSlice";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://34.27.54.18:8000/api",
+    baseUrl: "http://localhost:8000/api",
   }),
   endpoints: (builder) => ({
     refreshToken: builder.query({
