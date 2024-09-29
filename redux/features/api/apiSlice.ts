@@ -4,7 +4,7 @@ import { userLoggedIn, userLoggedOut } from "../auth/authSlice";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://34.41.41.79:8000/api",
+    baseUrl: "https://app.eduquestlearn.site/api",
   }),
   endpoints: (builder) => ({
     refreshToken: builder.query({
