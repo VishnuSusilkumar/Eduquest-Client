@@ -1,5 +1,5 @@
 import sockerIO from "socket.io-client";
-const EndPoint = "http://localhost:8000" || "";
+const EndPoint = "https://app.eduquestelearn.site" || "";
 export const socketId = sockerIO(EndPoint, {
   transports: ["websocket"],
   path: "/socket.io",
