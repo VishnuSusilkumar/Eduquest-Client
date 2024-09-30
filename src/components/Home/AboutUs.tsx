@@ -20,14 +20,16 @@ const AboutUs: React.FC<Props> = () => {
             </span>
           </span>
           <span className="mb-3 hidden text-sm 800px:block 800px:w-[24%] mt-6">
-            Lorem Ipsum has been the industry&apos;s standard dummy text ever since
-            the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. Versions of the Lorem
-            ipsum text have been used in typesetting at least since the 1960s,
-            when it was popularized by advertisements for Letraset transfer
-            sheets. Lorem ipsum was introduced to templates for its desktop
-            publishing program PageMaker. as have many LaTeX packages, web
-            content managers such as Joomla! and WordPress, and CSS libraries.
+            Eduquest is a comprehensive e-learning platform designed to connect
+            students with expert instructors in various fields. It offers a wide
+            range of courses, interactive learning tools, and real-time
+            engagement features. Instructors can track analytics via
+            personalized dashboards, while students benefit from video
+            tutorials, quizzes, and assignments. The platform supports in-app
+            notifications, course reviews, and rating options, enhancing the
+            learning experience. Eduquest prioritizes user-friendly design,
+            responsive search, and secure video access, making it an ideal
+            choice for learners and educators alike.
             <br />
             <br />
             <Badge text="Explore More" arrow />
