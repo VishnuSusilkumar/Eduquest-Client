@@ -70,7 +70,7 @@ const InstructorRegister: React.FC<Props> = (props) => {
     if (isSuccess) {
       toast.success("Registration successful");
       refetch();
-      router.push("/");
+      router.push("/profile");
       
     }
     if (error) {
