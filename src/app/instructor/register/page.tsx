@@ -14,6 +14,7 @@ import { useInstructorRegisterMutation } from "../../../../redux/features/instru
 import { useRouter } from "next/navigation";
 import Protected from "../../../hooks/useProtected";
 import SubLoader from "../../../components/ui/Loader/SubLoader";
+import { useLoadUserQuery } from "../../../../redux/features/api/apiSlice"; 
 
 const name = Yup.string()
   .max(30)
@@ -63,11 +64,13 @@ const InstructorRegister: React.FC<Props> = (props) => {
   const [route, setRoute] = useState("Login");
   const [register, { isSuccess, error, isLoading }] =
     useInstructorRegisterMutation();
+  const { refetch } = useLoadUserQuery(undefined, {});
 
   useEffect(() => {
     if (isSuccess) {
       toast.success("Registration successful");
-      window.location.reload();
+      refetch();
+      router.push("/");
       
     }
     if (error) {
