@@ -9,8 +9,8 @@ import "@stream-io/video-react-sdk/dist/css/styles.css";
 
 const apiKey = "mmhfdzb5evj2";
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3Byb250by5nZXRzdHJlYW0uaW8iLCJzdWIiOiJ1c2VyL1dlZGdlX0FudGlsbGVzIiwidXNlcl9pZCI6IldlZGdlX0FudGlsbGVzIiwidmFsaWRpdHlfaW5fc2Vjb25kcyI6NjA0ODAwLCJpYXQiOjE3Mjc2ODMxOTAsImV4cCI6MTcyODI4Nzk5MH0.QBu4Djdk1sMSW_1eohaWAnZp6YO9Hg6mIsy3cUdjkNs";
-const userId = "Wedge_Antilles";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3Byb250by5nZXRzdHJlYW0uaW8iLCJzdWIiOiJ1c2VyL1NhdGVsZV9TaGFuIiwidXNlcl9pZCI6IlNhdGVsZV9TaGFuIiwidmFsaWRpdHlfaW5fc2Vjb25kcyI6NjA0ODAwLCJpYXQiOjE3MzAzNTgwMzMsImV4cCI6MTczMDk2MjgzM30.3BW8oEB3tR45aD4rZRKAX-H5dwKXhLDmnvqViV0-YJo";
+const userId = "Satele_Shan";
 
 const client = new StreamVideoClient({
   apiKey,
