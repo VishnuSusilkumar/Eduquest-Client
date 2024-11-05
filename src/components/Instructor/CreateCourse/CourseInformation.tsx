@@ -1,6 +1,7 @@
 import { styles } from "../../../styles/style";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetCategoriesQuery } from "../../../../redux/features/admin/adminApi";
+import axios from "axios";
 
 type Props = {
   active: number;
@@ -16,7 +17,26 @@ const CourseInformation: React.FC<Props> = ({
   setCourseInfo,
 }) => {
   const [dragging, setDragging] = useState(false);
+  const [videoOptions, setVideoOptions] = useState<any[]>([]);
   const { data: categories } = useGetCategoriesQuery(undefined, {});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://app.eduquestelearn.site/api/transcode/getData`,
+          { withCredentials: true }
+        );
+        const uploadedVideos = response.data.filter(
+          (item: any) => item.status === "Uploaded"
+        );
+        setVideoOptions(uploadedVideos);
+      } catch (e: any) {
+        console.log(e);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -148,21 +168,24 @@ const CourseInformation: React.FC<Props> = ({
               />
             </div>
             <div className="w-[45%]">
-              <label className={`${styles.label}`} htmlFor="email">
-                Subtitle Url{" "}
-              </label>
-              <input
-                type="text"
+              <label htmlFor="subtitleUrl">Subtitle URL</label>
+              <select
+                name="subtitleUrl"
                 required
-                name=""
                 value={courseInfo.subtitleUrl}
                 onChange={(e: any) =>
                   setCourseInfo({ ...courseInfo, subtitleUrl: e.target.value })
                 }
-                id="subtitle"
-                placeholder="Subtitle Url.."
+                id="subtitleUrl"
                 className={`${styles.input}`}
-              />
+              >
+                <option value="">Select Subtitle URL</option>
+                {videoOptions.map((option) => (
+                  <option value={option.subtitleUrl} key={option._id}>
+                    {option.fileName}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
@@ -188,22 +211,24 @@ const CourseInformation: React.FC<Props> = ({
             </select>
           </div>
           <div className="w-[45%]">
-            <label htmlFor="">Demo Url</label>
-            <input
-              type="text"
+            <label htmlFor="demoUrl">Demo URL</label>
+            <select
               name="demoUrl"
               required
               value={courseInfo.demoUrl}
               onChange={(e: any) =>
-                setCourseInfo({
-                  ...courseInfo,
-                  demoUrl: e.target.value,
-                })
+                setCourseInfo({ ...courseInfo, demoUrl: e.target.value })
               }
               id="demoUrl"
-              placeholder="url.."
-              className={`${styles.input} `}
-            />
+              className={`${styles.input}`}
+            >
+              <option value="">Select Demo URL</option>
+              {videoOptions.map((option) => (
+                <option value={option.videoUrl} key={option._id}>
+                  {option.fileName}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="w-full mt-4">

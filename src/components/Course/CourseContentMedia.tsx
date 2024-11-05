@@ -20,7 +20,7 @@ import { formatDate } from "../../utils/FormatDate";
 import { MdMessage, MdVerifiedUser } from "react-icons/md";
 import Ratings from "../../utils/Ratings";
 import socketIO from "socket.io-client";
-const EndPoint = "http://localhost:8000" || "";
+const EndPoint = "https://app.eduquestelearn.site";
 const socketId = socketIO(EndPoint, { transports: ["websocket"] });
 
 type Props = {

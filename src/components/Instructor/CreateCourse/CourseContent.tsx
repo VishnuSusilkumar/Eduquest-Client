@@ -1,6 +1,7 @@
+import axios from "axios";
 import { styles } from "../../../styles/style";
 import { Link2Icon, PencilIcon, PlusCircle } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineDelete, AiOutlinePlusCircle } from "react-icons/ai";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { toast } from "sonner";
@@ -24,6 +25,25 @@ const CourseContent: React.FC<Props> = ({
     Array(courseContentData?.length).fill(false)
   );
   const [activeSection, setActiveSection] = useState(1);
+  const [videoOptions, setVideoOptions] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://app.eduquestelearn.site/api/transcode/getData`,
+          { withCredentials: true }
+        );
+        const uploadedVideos = response.data.filter(
+          (item: any) => item.status === "Uploaded"
+        );
+        setVideoOptions(uploadedVideos);
+      } catch (e: any) {
+        console.log(e);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -226,9 +246,7 @@ const CourseContent: React.FC<Props> = ({
                     </div>
                     <div className="my-3">
                       <label className={`${styles.label}`}>Video Url</label>
-                      <input
-                        type="text"
-                        placeholder="url"
+                      <select
                         className={`${styles.input}`}
                         value={item.videoUrl}
                         onChange={(e) => {
@@ -237,16 +255,20 @@ const CourseContent: React.FC<Props> = ({
                             ...updatedData[index],
                             videoUrl: e.target.value,
                           };
-
                           setCourseContentData(updatedData);
                         }}
-                      />
+                      >
+                        <option value="">Select Video URL</option>
+                        {videoOptions.map((option) => (
+                          <option key={option._id} value={option.videoUrl}>
+                            {option.fileName}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="my-3">
                       <label className={`${styles.label}`}>Subtitle Url</label>
-                      <input
-                        type="text"
-                        placeholder="Subtitle Url..."
+                      <select
                         className={`${styles.input}`}
                         value={item.subtitleUrl}
                         onChange={(e) => {
@@ -255,10 +277,16 @@ const CourseContent: React.FC<Props> = ({
                             ...updatedData[index],
                             subtitleUrl: e.target.value,
                           };
-
                           setCourseContentData(updatedData);
                         }}
-                      />
+                      >
+                        <option value="">Select Subtitle URL</option>
+                        {videoOptions.map((option) => (
+                          <option key={option._id} value={option.subtitleUrl}>
+                            {option.fileName}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="my-3">
                       <label className={`${styles.label}`}>
