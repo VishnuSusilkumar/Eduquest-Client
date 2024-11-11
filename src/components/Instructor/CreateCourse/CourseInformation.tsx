@@ -79,10 +79,6 @@ const CourseInformation: React.FC<Props> = ({
   };
   return (
     <div className=" m-auto mt-12">
-      <p className="text-gray-600 text-center mb-4">
-        Before creating a course, please complete video uploads in the "Upload
-        Media" section.
-      </p>
       <form onSubmit={handleSubmit} className={`${styles.label}`}>
         <div>
           <label htmlFor="">Course Name</label>
