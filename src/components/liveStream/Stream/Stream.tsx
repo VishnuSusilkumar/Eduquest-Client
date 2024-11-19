@@ -21,8 +21,8 @@ import {
 
 const apiKey = "mmhfdzb5evj2";
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3Byb250by5nZXRzdHJlYW0uaW8iLCJzdWIiOiJ1c2VyL0Jhc3RpbGFfU2hhbiIsInVzZXJfaWQiOiJCYXN0aWxhX1NoYW4iLCJ2YWxpZGl0eV9pbl9zZWNvbmRzIjo2MDQ4MDAsImlhdCI6MTczMTI5NDA1MywiZXhwIjoxNzMxODk4ODUzfQ.Z6ovXH499D8yGGQ5ZKaAq8jyLdr8pM6I_jpbsRwMg5w";
-const userId = "Bastila_Shan";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3Byb250by5nZXRzdHJlYW0uaW8iLCJzdWIiOiJ1c2VyL0dyZWVkbyIsInVzZXJfaWQiOiJHcmVlZG8iLCJ2YWxpZGl0eV9pbl9zZWNvbmRzIjo2MDQ4MDAsImlhdCI6MTczMTk4NDg1MCwiZXhwIjoxNzMyNTg5NjUwfQ.Ah0MQGHHE_6CZ_XXWiOl6sDjuq2neY8FUqbhGVNMVk8";
+const userId = "Greedo";
 
 const user: User = {
   id: userId,
